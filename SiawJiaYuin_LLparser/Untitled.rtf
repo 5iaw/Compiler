@@ -1,0 +1,353 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2709
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica-Bold;\f1\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;}
+{\*\expandedcolortbl;;\cssrgb\c0\c0\c0;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\deftab720
+\pard\pardeftab720\sl322\sa213\partightenfactor0
+
+\f0\b\fs28 \cf2 \expnd0\expndtw0\kerning0
+\ul \ulc2 BNF
+\f1\b0\fs32 \ulnone \
+\pard\pardeftab720\sl245\sa213\partightenfactor0
+
+\fs21\fsmilli10667 \cf2 S\'a0 -> BEGIN_BLOCK\'a0 BEGIN_STMT
+\fs32 \
+
+\fs21\fsmilli10667 BEGIN_BLOCK -> program PROGRAM_NAME
+\fs32 \
+
+\fs21\fsmilli10667 PROGRAM_NAME -> id 
+\fs32 \
+
+\fs21\fsmilli10667 BEGIN_STMT -> begin STMT* end
+\fs32 \
+
+\fs21\fsmilli10667 STMT -> DECLARATION
+\fs32 \
+
+\fs21\fsmilli10667 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 | IF_STMT
+\fs32 \
+
+\fs21\fsmilli10667 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 | PRINT_STMT
+\fs32 \
+
+\fs21\fsmilli10667 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 | WHILE_STMT
+\fs32 \
+
+\fs21\fsmilli10667 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 | FOR_STMT
+\fs32 \
+
+\fs21\fsmilli10667 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 | BREAK_STMT
+\fs32 \
+
+\fs21\fsmilli10667 DECLARATION -> int OPERATOR ;
+\fs32 \
+
+\fs21\fsmilli10667 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 | OPERATOR ,
+\fs32 \
+
+\fs21\fsmilli10667 OPERATOR -> id = OP_STMT
+\fs32 \
+
+\fs21\fsmilli10667 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 | OP_STMT
+\fs32 \
+
+\fs21\fsmilli10667 OP_STMT -> TERM
+\fs32 \
+
+\fs21\fsmilli10667 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 | OP_STMT + TERM
+\fs32 \
+
+\fs21\fsmilli10667 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 | id ++
+\fs32 \
+
+\fs21\fsmilli10667 TERM -> TERM * FACTOR
+\fs32 \
+
+\fs21\fsmilli10667 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 | FACTOR
+\fs32 \
+
+\fs21\fsmilli10667 FACTOR -> number_literal
+\fs32 \
+
+\fs21\fsmilli10667 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 | id
+\fs32 \
+
+\fs21\fsmilli10667 PRINT_CONTENT -> string_literal
+\fs32 \
+
+\fs21\fsmilli10667 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 | id
+\fs32 \
+
+\fs21\fsmilli10667 IF_STMT -> if ( COM_STMT ) BEGIN_STMT
+\fs32 \
+
+\fs21\fsmilli10667 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 | if ( COM_STMT ) BEGIN_STMT else_if ( OP_STMT ) BEGIN_STMT
+\fs32 \
+
+\fs21\fsmilli10667 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 \'a0| if ( COM_STMT ) BEGIN_STMT else_if ( OP_STMT ) BEGIN_STMT else BEGIN_STMT
+\fs32 \
+
+\fs21\fsmilli10667 PRINT_STMT -> print_line ( PRINT_CONTENT ) ;
+\fs32 \
+
+\fs21\fsmilli10667 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 | display ( PRINT_CONTENT ) ;
+\fs32 \
+
+\fs21\fsmilli10667 WHILE_STMT -> while ( STMT ) BEGIN_STMT
+\fs32 \
+
+\fs21\fsmilli10667 FOR_STMT -> for ( STMT ) BEGIN_STMT
+\fs32 \
+
+\fs21\fsmilli10667 BREAK_STMT -> break ;
+\fs32 \
+
+\fs21\fsmilli10667 COM_STMT -> LT_STMT
+\fs32 \
+
+\fs21\fsmilli10667 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 | EQ_STMT
+\fs32 \
+
+\fs21\fsmilli10667 LT_STMT -> FACTOR < FACTOR
+\fs32 \
+
+\fs21\fsmilli10667 EQ_STMT -> FACTOR == FACTOR
+\fs32 \
+\pard\pardeftab720\sl245\partightenfactor0
+
+\fs21\fsmilli10667 \cf2 \
+\pard\pardeftab720\sl245\sa213\partightenfactor0
+\cf2 \'a0
+\fs32 \
+\pard\pardeftab720\sl245\sa213\partightenfactor0
+
+\f0\b\fs21\fsmilli10667 \cf2 \ul \'a0
+\f1\b0\fs32 \ulnone \
+\pard\pardeftab720\sl306\sa213\partightenfactor0
+
+\f0\b\fs26\fsmilli13333 \cf2 \ul BNF without Left Recursion
+\f1\b0\fs32 \ulnone \
+\pard\pardeftab720\partightenfactor0
+
+\fs21\fsmilli10667 \cf2 S -> BEGIN_BLOCK BEGIN_STMT
+\fs32 \
+
+\fs21\fsmilli10667 \'a0
+\fs32 \
+
+\fs21\fsmilli10667 BEGIN_BLOCK -> program id
+\fs32 \
+
+\fs21\fsmilli10667 \'a0
+\fs32 \
+
+\fs21\fsmilli10667 BEGIN_STMT -> begin STMTS end
+\fs32 \
+
+\fs21\fsmilli10667 \'a0
+\fs32 \
+
+\fs21\fsmilli10667 STMTS -> STMT STMTS
+\fs32 \
+
+\fs21\fsmilli10667 STMTS -> ''
+\fs32 \
+
+\fs21\fsmilli10667 \'a0
+\fs32 \
+
+\fs21\fsmilli10667 STMT -> DECLARATION_LIST
+\fs32 \
+
+\fs21\fsmilli10667 STMT -> IF_STMT
+\fs32 \
+
+\fs21\fsmilli10667 STMT -> PRINT_STMT
+\fs32 \
+
+\fs21\fsmilli10667 STMT -> WHILE_STMT
+\fs32 \
+
+\fs21\fsmilli10667 STMT -> FOR_STMT
+\fs32 \
+
+\fs21\fsmilli10667 STMT -> BREAK_STMT
+\fs32 \
+
+\fs21\fsmilli10667 \'a0
+\fs32 \
+
+\fs21\fsmilli10667 \'a0
+\fs32 \
+
+\fs21\fsmilli10667 DECLARATION_LIST -> DECLARATION DECLARATION_LIST'
+\fs32 \
+
+\fs21\fsmilli10667 DECLARATION_LIST -> \'91\'92
+\fs32 \
+
+\fs21\fsmilli10667 \'a0
+\fs32 \
+
+\fs21\fsmilli10667 DECLARATION_LIST' -> , DECLARATION DECLARATION_LIST\'92
+\fs32 \
+
+\fs21\fsmilli10667 DECLARATION_LIST' -> ''
+\fs32 \
+
+\fs21\fsmilli10667 \'a0
+\fs32 \
+
+\fs21\fsmilli10667 DECLARATION -> TYPE ID_LIST ;
+\fs32 \
+
+\fs21\fsmilli10667 DECLARATION -> ID_LIST ;
+\fs32 \
+
+\fs21\fsmilli10667 \'a0
+\fs32 \
+
+\fs21\fsmilli10667 TYPE -> int
+\fs32 \
+
+\fs21\fsmilli10667 TYPE -> integer
+\fs32 \
+
+\fs21\fsmilli10667 \'a0
+\fs32 \
+
+\fs21\fsmilli10667 ASSIGNMENT -> = OP_STMT
+\fs32 \
+
+\fs21\fsmilli10667 ASSIGNMENT -> \'91\'92
+\fs32 \
+
+\fs21\fsmilli10667 \'a0
+\fs32 \
+
+\fs21\fsmilli10667 ID_LIST -> id ASSIGNMENT ID_LIST'
+\fs32 \
+
+\fs21\fsmilli10667 ID_LIST' -> , id ASSIGNMENT ID_LIST'
+\fs32 \
+
+\fs21\fsmilli10667 ID_LIST' -> ''
+\fs32 \
+
+\fs21\fsmilli10667 \'a0
+\fs32 \
+
+\fs21\fsmilli10667 OP_STMT -> TERM OP_STMT'
+\fs32 \
+
+\fs21\fsmilli10667 \'a0
+\fs32 \
+
+\fs21\fsmilli10667 OP_STMT' -> + TERM OP_STMT'
+\fs32 \
+
+\fs21\fsmilli10667 OP_STMT\'92 -> ++ 
+\fs32 \
+
+\fs21\fsmilli10667 OP_STMT' -> ''
+\fs32 \
+
+\fs21\fsmilli10667 \'a0
+\fs32 \
+
+\fs21\fsmilli10667 TERM -> FACTOR TERM'
+\fs32 \
+
+\fs21\fsmilli10667 \'a0
+\fs32 \
+
+\fs21\fsmilli10667 TERM' -> * FACTOR TERM'
+\fs32 \
+
+\fs21\fsmilli10667 TERM' -> ''
+\fs32 \
+
+\fs21\fsmilli10667 \'a0
+\fs32 \
+
+\fs21\fsmilli10667 FACTOR -> number_literal
+\fs32 \
+
+\fs21\fsmilli10667 FACTOR -> id
+\fs32 \
+
+\fs21\fsmilli10667 \'a0
+\fs32 \
+
+\fs21\fsmilli10667 PRINT_CONTENT -> string_literal
+\fs32 \
+
+\fs21\fsmilli10667 PRINT_CONTENT -> identifier
+\fs32 \
+
+\fs21\fsmilli10667 \'a0
+\fs32 \
+
+\fs21\fsmilli10667 IF_STMT -> if ( COM_STMT ) BEGIN_STMT IF_STMT'
+\fs32 \
+
+\fs21\fsmilli10667 \'a0
+\fs32 \
+
+\fs21\fsmilli10667 IF_STMT' -> else_if ( COM_STMT ) BEGIN_STMT IF_STMT'
+\fs32 \
+
+\fs21\fsmilli10667 IF_STMT' -> else BEGIN_STMT
+\fs32 \
+
+\fs21\fsmilli10667 IF_STMT' -> ''
+\fs32 \
+
+\fs21\fsmilli10667 \'a0
+\fs32 \
+
+\fs21\fsmilli10667 PRINT_STMT -> print_line ( PRINT_CONTENT ) ;
+\fs32 \
+
+\fs21\fsmilli10667 PRINT_STMT -> display ( PRINT_CONTENT ) ;
+\fs32 \
+
+\fs21\fsmilli10667 \'a0
+\fs32 \
+
+\fs21\fsmilli10667 WHILE_STMT -> while ( COM_STMT ) BEGIN_STMT
+\fs32 \
+
+\fs21\fsmilli10667 \'a0
+\fs32 \
+
+\fs21\fsmilli10667 FOR_STMT -> for ( DECLARATION COM_STMT ; OP_STMT ) BEGIN_STMT
+\fs32 \
+
+\fs21\fsmilli10667 \'a0
+\fs32 \
+
+\fs21\fsmilli10667 BREAK_STMT -> break ;
+\fs32 \
+
+\fs21\fsmilli10667 \'a0
+\fs32 \
+
+\fs21\fsmilli10667 COM_STMT -> TERM COM_STMT\'92
+\fs32 \
+
+\fs21\fsmilli10667 \'a0
+\fs32 \
+
+\fs21\fsmilli10667 COM_STMT\'92 -> < FACTOR 
+\fs32 \
+
+\fs21\fsmilli10667 COM_STMT\'92 -> == FACTOR
+\fs32 \
+\pard\pardeftab720\sl245\sa213\partightenfactor0
+
+\fs21\fsmilli10667 \cf2 COM_STMT\'92 -> \'91\'92
+\fs32 \
+}

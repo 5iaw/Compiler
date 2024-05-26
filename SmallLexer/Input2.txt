@@ -1,0 +1,10 @@
+program Exercise2 
+begin 
+	 int i.Value.$ = 0, $Minute.In.Hour = 1; -- comment first line
+ 	 while (i.Value.$ < 5) 
+ 	 begin
+		print_line(i.Value.$ );
+     	  	i.Value.$ = i.Value.$ + 1;
+     	  	$Minute.In.Hour = $Minute.In.Hour + 10;
+ 	 end  
+end

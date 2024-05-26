@@ -1,0 +1,18 @@
+program Exercise 
+  begin  -- comment1
+	   int  Time.10.24 = 2206, Hour.In.Day = 0, $Minute.In.Hour ;
+    	   if (Time.10.24 < 10) 
+		begin
+		    if (Time.10.24 < 20)
+			begin
+			 $Minute.In.Hour = Hour.In.Day * 60;
+			 print_line("Good day.");
+			end
+		    else 
+			begin
+			 print_line("Good evening.");
+			end
+		    print_line("Good morning.");
+		    Hour.In.Day = 24;
+	        end 
+   
