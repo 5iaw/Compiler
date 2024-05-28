@@ -1,0 +1,7 @@
+program Exercise 
+	begin  -- syntax directed translation
+	   int  Length = 10, length = 5, width = 7, Volume;
+	   Volume = width* length* Length;
+	   print_line("Volume:");
+   	   print_line(Volume);
+	end
