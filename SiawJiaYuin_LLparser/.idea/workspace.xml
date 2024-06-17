@@ -4,7 +4,23 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0188bf44-7e07-4d9a-91eb-c2b9c331ac52" name="Changes" comment="" />
+    <list default="true" id="0188bf44-7e07-4d9a-91eb-c2b9c331ac52" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/../SiawJiaYuin_RecurParser/parser/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SmallLexer/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SmallLexer/src/smalllexer/input.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LLParser" beforeDir="false" afterPath="$PROJECT_DIR$/LLParser" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LLParser/src/ExpandIdentifier.class" beforeDir="false" afterPath="$PROJECT_DIR$/LLParser/src/ExpandIdentifier.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LLParser/src/FSM.class" beforeDir="false" afterPath="$PROJECT_DIR$/LLParser/src/FSM.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LLParser/src/LL1Parser.class" beforeDir="false" afterPath="$PROJECT_DIR$/LLParser/src/LL1Parser.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LLParser/src/LL1Parser.java" beforeDir="false" afterPath="$PROJECT_DIR$/LLParser/src/LL1Parser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LLParser/src/LLparser.class" beforeDir="false" afterPath="$PROJECT_DIR$/LLParser/src/LLparser.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LLParser/src/LLparser.java" beforeDir="false" afterPath="$PROJECT_DIR$/LLParser/src/LLparser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LLParser/src/Lexer.class" beforeDir="false" afterPath="$PROJECT_DIR$/LLParser/src/Lexer.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LLParser/src/Operator.class" beforeDir="false" afterPath="$PROJECT_DIR$/LLParser/src/Operator.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LLParser/src/Token$TokenEntry.class" beforeDir="false" afterPath="$PROJECT_DIR$/LLParser/src/Token$TokenEntry.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LLParser/src/Token.class" beforeDir="false" afterPath="$PROJECT_DIR$/LLParser/src/Token.class" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -18,7 +34,7 @@
     </option>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/LLParser" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
   &quot;lastFilter&quot;: {
@@ -47,8 +63,14 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "main",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/Users/dana/Desktop/2024-1/compiler/SiawJiaYuin_LLParser",
-    "onboarding.tips.debug.path": "/Users/dana/Desktop/2024-1/compiler/LParser/src/Main.java"
+    "last_opened_file_path": "/Users/dana/Desktop/2024-1/compiler/SiawJiaYuin_LLparser",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "onboarding.tips.debug.path": "/Users/dana/Desktop/2024-1/compiler/LParser/src/Main.java",
+    "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
   <component name="RecentsManager">
@@ -70,6 +92,14 @@
       </list>
     </recent_temporary>
   </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9f38398b9061-39b83d9b5494-intellij.indexing.shared.core-IU-241.17011.79" />
+        <option value="bundled-js-predefined-1d06a55b98c1-0b3e54e931b4-JavaScript-IU-241.17011.79" />
+      </set>
+    </attachedChunks>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -78,8 +108,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1716179685894</updated>
+      <workItem from="1718432752597" duration="5291000" />
     </task>
     <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
