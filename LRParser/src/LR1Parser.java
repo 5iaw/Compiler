@@ -36,14 +36,76 @@ public class LR1Parser {
 
     private void generateProductionTable() {
         // Define and add production rules with unique indices
-        addProduction(0, "S'", Arrays.asList("S"));
+        addProduction(0, "S_P", Arrays.asList("S"));
         addProduction(1, "S", Arrays.asList("BEGIN_BLOCK", "BEGIN_STMT"));
         addProduction(2, "BEGIN_BLOCK", Arrays.asList("program", "id"));
         addProduction(3, "BEGIN_STMT", Arrays.asList("begin", "STMTS", "end"));
         addProduction(4, "STMTS", Arrays.asList("STMT", "STMTS"));
         addProduction(5, "STMTS", Arrays.asList("")); // epsilon
 
+        addProduction(6, "STMT", Arrays.asList("DECLARATION_LIST"));
+        addProduction(7, "STMT", Arrays.asList("IF_STMT"));
+        addProduction(8, "STMT", Arrays.asList("PRINT_STMT"));
+        addProduction(9, "STMT", Arrays.asList("WHILE_STMT"));
+        addProduction(10, "STMT", Arrays.asList("FOR_STMT"));
+        addProduction(11, "STMT", Arrays.asList("BREAK_STMT"));
+
+        addProduction(12, "DECLARATION_LIST", Arrays.asList("DECLARATION", "DECLARATION_LIST_P"));
+
+        addProduction(13, "DECLARATION_LIST_P", Arrays.asList(",", "DECLARATION", "DECLARATION_LIST_P"));
+        addProduction(14, "DECLARATION_LIST_P", Arrays.asList("")); // epsilon
+
+        addProduction(15, "DECLARATION", Arrays.asList("TYPE", "ID_LIST"));
+        addProduction(16, "DECLARATION", Arrays.asList("ID_LIST"));
+
+        addProduction(17, "TYPE", Arrays.asList("int"));
+        addProduction(18, "TYPE", Arrays.asList("integer"));
+
+        addProduction(19, "ASSIGNMENT", Arrays.asList("=", "OP_STMT"));
+        addProduction(20, "ASSIGNMENT", Arrays.asList("")); // epsilon
+
+        addProduction(21, "ID_LIST", Arrays.asList("id", "ASSIGNMENT", "ID_LIST_P"));
+        addProduction(22, "ID_LIST_P", Arrays.asList("")); // epsilon
+
+        addProduction(23, "OP_STMT", Arrays.asList("TERM", "OP_STMT_P"));
+
+        addProduction(24, "OP_STMT_P", Arrays.asList("+", "TERM", "OP_STMT_P"));
+        addProduction(25, "OP_STMT_P", Arrays.asList("++"));
+        addProduction(26, "OP_STMT_P", Arrays.asList("")); // epsilon
+
+        addProduction(27, "TERM", Arrays.asList("FACTOR", "TERM_P"));
+
+        addProduction(28, "TERM_P", Arrays.asList("*", "FACTOR", "TERM_P"));
+        addProduction(29, "TERM_P", Arrays.asList("")); // epsilon
+
+        addProduction(30, "FACTOR", Arrays.asList("number_literal"));
+        addProduction(31, "FACTOR", Arrays.asList("id"));
+
+        addProduction(32, "PRINT_CONTENT", Arrays.asList("string_literal"));
+        addProduction(33, "PRINT_CONTENT", Arrays.asList("identifier"));
+
+        addProduction(34, "IF_STMT", Arrays.asList("if", "(", "COM_STMT", ")", "BEGIN_STMT", "IF_STMT_P"));
+
+        addProduction(35, "IF_STMT_P", Arrays.asList("else_if", "(", "COM_STMT", ")", "BEGIN_STMT", "IF_STMT_P"));
+        addProduction(36, "IF_STMT_P", Arrays.asList("else", "BEGIN_STMT"));
+        addProduction(37, "IF_STMT_P", Arrays.asList("")); // epsilon
+
+        addProduction(38, "PRINT_STMT", Arrays.asList("print_line", "(", "PRINT_CONTENT", ")", ";"));
+        addProduction(39, "PRINT_STMT", Arrays.asList("display", "(", "PRINT_CONTENT", ")", ";"));
+
+        addProduction(40, "WHILE_STMT", Arrays.asList("while", "(", "COM_STMT", ")", "BEGIN_STMT"));
+
+        addProduction(41, "FOR_STMT", Arrays.asList("for", "(", "DECLARATION", "COM_STMT", ";", "OP_STMT", ")", "BEGIN_STMT"));
+
+        addProduction(42, "BREAK_STMT", Arrays.asList("break", ";"));
+
+        addProduction(43, "COM_STMT", Arrays.asList("TERM", "COM_STMT_P"));
+
+        addProduction(44, "COM_STMT_P", Arrays.asList("<", "FACTOR"));
+        addProduction(45, "COM_STMT_P", Arrays.asList("==", "FACTOR"));
+        addProduction(46, "COM_STMT_P", Arrays.asList("")); // epsilon
     }
+
 
 
     private void generate_parsingTable() {
