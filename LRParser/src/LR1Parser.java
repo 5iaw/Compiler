@@ -4,14 +4,13 @@ public class LR1Parser {
 
     public int idx;
     private Stack<String> stack;
-    private HashMap<String, HashMap<String, List<String>>> parsingTable;
+    private HashMap<Integer, HashMap<String, List<String>>> productionTable;
     public List<Token.TokenEntry> table;
     public int max_len;
     public Token.TokenEntry token;
     public List<String> declared_variables;
     private HashMap<Integer, HashMap<String, Pair<String, Integer>>> actionTable;
     private HashMap<Integer, HashMap<String, Integer>> goToTable;
-    public List<String> declared_state;
 
     public Token.TokenEntry entry;
 
@@ -27,6 +26,23 @@ public class LR1Parser {
         String[] tokenArray = inputString.split("\\s+");
         //System.out.println(tokenArray[1]);
         return Arrays.asList(tokenArray);
+    }
+
+    private void addProduction(int index, String lhs, List<String> rhs) {
+        HashMap<String, List<String>> production = new HashMap<>();
+        production.put(lhs, rhs);
+        productionTable.put(index, production);
+    }
+
+    private void generateProductionTable() {
+        // Define and add production rules with unique indices
+        addProduction(0, "S'", Arrays.asList("S"));
+        addProduction(1, "S", Arrays.asList("BEGIN_BLOCK", "BEGIN_STMT"));
+        addProduction(2, "BEGIN_BLOCK", Arrays.asList("program", "id"));
+        addProduction(3, "BEGIN_STMT", Arrays.asList("begin", "STMTS", "end"));
+        addProduction(4, "STMTS", Arrays.asList("STMT", "STMTS"));
+        addProduction(5, "STMTS", Arrays.asList("")); // epsilon
+
     }
 
 
@@ -236,905 +252,767 @@ public class LR1Parser {
 
             actionTable = new HashMap<>();
 
-            addAction(0, "program", "SHIFT", 3);
-            addAction(0, "S", "ERROR", None);
-            addAction(0, "BEGIN_BLOCK", "ERROR", None);
-            addAction(1, "$", "ACCEPT", None);
-            addAction(2, "begin", "SHIFT", 5);
-            addAction(2, "BEGIN_STMT", "ERROR", None);
-            addAction(3, "id", "SHIFT", 6);
-            addAction(4, "$", "REDUCE", 1);
-            addAction(5, "id", "SHIFT", 26);
-            addAction(5, "end", "REDUCE", 5);
-            addAction(5, "int", "SHIFT", 24);
-            addAction(5, "integer", "SHIFT", 25);
-            addAction(5, "if", "SHIFT", 16);
-            addAction(5, "print_line", "SHIFT", 17);
-            addAction(5, "display", "SHIFT", 18);
-            addAction(5, "while", "SHIFT", 19);
-            addAction(5, "for", "SHIFT", 20);
-            addAction(5, "break", "SHIFT", 21);
-            addAction(5, "STMTS", "ERROR", None);
-            addAction(5, "STMT", "ERROR", None);
-            addAction(5, "DECLARATION_LIST", "ERROR", None);
-            addAction(5, "DECLARATION", "ERROR", None);
-            addAction(5, "TYPE", "ERROR", None);
-            addAction(5, "ID_LIST", "ERROR", None);
-            addAction(5, "IF_STMT", "ERROR", None);
-            addAction(5, "PRINT_STMT", "ERROR", None);
-            addAction(5, "WHILE_STMT", "ERROR", None);
-            addAction(5, "FOR_STMT", "ERROR", None);
-            addAction(5, "BREAK_STMT", "ERROR", None);
-            addAction(6, "begin", "REDUCE", 2);
-            addAction(7, "end", "SHIFT", 27);
-            addAction(8, "id", "SHIFT", 26);
-            addAction(8, "end", "REDUCE", 5);
-            addAction(8, "int", "SHIFT", 24);
-            addAction(8, "integer", "SHIFT", 25);
-            addAction(8, "if", "SHIFT", 16);
-            addAction(8, "print_line", "SHIFT", 17);
-            addAction(8, "display", "SHIFT", 18);
-            addAction(8, "while", "SHIFT", 19);
-            addAction(8, "for", "SHIFT", 20);
-            addAction(8, "break", "SHIFT", 21);
-            addAction(8, "STMTS", "ERROR", None);
-            addAction(8, "STMT", "ERROR", None);
-            addAction(8, "DECLARATION_LIST", "ERROR", None);
-            addAction(8, "DECLARATION", "ERROR", None);
-            addAction(8, "TYPE", "ERROR", None);
-            addAction(8, "ID_LIST", "ERROR", None);
-            addAction(8, "IF_STMT", "ERROR", None);
-            addAction(8, "PRINT_STMT", "ERROR", None);
-            addAction(8, "WHILE_STMT", "ERROR", None);
-            addAction(8, "FOR_STMT", "ERROR", None);
-            addAction(8, "BREAK_STMT", "ERROR", None);
-            addAction(9, "id", "REDUCE", 6);
-            addAction(9, "end", "REDUCE", 6);
-            addAction(9, "int", "REDUCE", 6);
-            addAction(9, "integer", "REDUCE", 6);
-            addAction(9, "if", "REDUCE", 6);
-            addAction(9, "print_line", "REDUCE", 6);
-            addAction(9, "display", "REDUCE", 6);
-            addAction(9, "while", "REDUCE", 6);
-            addAction(9, "for", "REDUCE", 6);
-            addAction(9, "break", "REDUCE", 6);
-            addAction(10, "id", "REDUCE", 7);
-            addAction(10, "end", "REDUCE", 7);
-            addAction(10, "int", "REDUCE", 7);
-            addAction(10, "integer", "REDUCE", 7);
-            addAction(10, "if", "REDUCE", 7);
-            addAction(10, "print_line", "REDUCE", 7);
-            addAction(10, "display", "REDUCE", 7);
-            addAction(10, "while", "REDUCE", 7);
-            addAction(10, "for", "REDUCE", 7);
-            addAction(10, "break", "REDUCE", 7);
-            addAction(11, "id", "REDUCE", 8);
-            addAction(11, "end", "REDUCE", 8);
-            addAction(11, "int", "REDUCE", 8);
-            addAction(11, "integer", "REDUCE", 8);
-            addAction(11, "if", "REDUCE", 8);
-            addAction(11, "print_line", "REDUCE", 8);
-            addAction(11, "display", "REDUCE", 8);
-            addAction(11, "while", "REDUCE", 8);
-            addAction(11, "for", "REDUCE", 8);
-            addAction(11, "break", "REDUCE", 8);
-            addAction(12, "id", "REDUCE", 9);
-            addAction(12, "end", "REDUCE", 9);
-            addAction(12, "int", "REDUCE", 9);
-            addAction(12, "integer", "REDUCE", 9);
-            addAction(12, "if", "REDUCE", 9);
-            addAction(12, "print_line", "REDUCE", 9);
-            addAction(12, "display", "REDUCE", 9);
-            addAction(12, "while", "REDUCE", 9);
-            addAction(12, "for", "REDUCE", 9);
-            addAction(12, "break", "REDUCE", 9);
-            addAction(13, "id", "REDUCE", 10);
-            addAction(13, "end", "REDUCE", 10);
-            addAction(13, "int", "REDUCE", 10);
-            addAction(13, "integer", "REDUCE", 10);
-            addAction(13, "if", "REDUCE", 10);
-            addAction(13, "print_line", "REDUCE", 10);
-            addAction(13, "display", "REDUCE", 10);
-            addAction(13, "while", "REDUCE", 10);
-            addAction(13, "for", "REDUCE", 10);
-            addAction(13, "break", "REDUCE", 10);
-            addAction(14, "id", "REDUCE", 11);
-            addAction(14, "end", "REDUCE", 11);
-            addAction(14, "int", "REDUCE", 11);
-            addAction(14, "integer", "REDUCE", 11);
-            addAction(14, "if", "REDUCE", 11);
-            addAction(14, "print_line", "REDUCE", 11);
-            addAction(14, "display", "REDUCE", 11);
-            addAction(14, "while", "REDUCE", 11);
-            addAction(14, "for", "REDUCE", 11);
-            addAction(14, "break", "REDUCE", 11);
-            addAction(15, ";", "REDUCE", 14);
-            addAction(15, ",", "SHIFT", 30);
-            addAction(15, "DECLARATION_LIST'", "ERROR", None);
-            addAction(16, "(", "SHIFT", 31);
-            addAction(17, "(", "SHIFT", 32);
-            addAction(18, "(", "SHIFT", 33);
-            addAction(19, "(", "SHIFT", 34);
-            addAction(20, "(", "SHIFT", 35);
-            addAction(21, ";", "SHIFT", 36);
-            addAction(22, "id", "SHIFT", 26);
-            addAction(22, "ID_LIST", "ERROR", None);
-            addAction(23, "id", "REDUCE", 16);
-            addAction(23, "end", "REDUCE", 16);
-            addAction(23, ";", "REDUCE", 16);
-            addAction(23, ",", "REDUCE", 16);
-            addAction(23, "int", "REDUCE", 16);
-            addAction(23, "integer", "REDUCE", 16);
-            addAction(23, "if", "REDUCE", 16);
-            addAction(23, "print_line", "REDUCE", 16);
-            addAction(23, "display", "REDUCE", 16);
-            addAction(23, "while", "REDUCE", 16);
-            addAction(23, "for", "REDUCE", 16);
-            addAction(23, "break", "REDUCE", 16);
-            addAction(24, "id", "REDUCE", 17);
-            addAction(25, "id", "REDUCE", 18);
-            addAction(26, "id", "REDUCE", 20);
-            addAction(26, "end", "REDUCE", 20);
-            addAction(26, ";", "REDUCE", 20);
-            addAction(26, ",", "REDUCE", 20);
-            addAction(26, "int", "REDUCE", 20);
-            addAction(26, "integer", "REDUCE", 20);
-            addAction(26, "=", "SHIFT", 39);
-            addAction(26, "if", "REDUCE", 20);
-            addAction(26, "print_line", "REDUCE", 20);
-            addAction(26, "display", "REDUCE", 20);
-            addAction(26, "while", "REDUCE", 20);
-            addAction(26, "for", "REDUCE", 20);
-            addAction(26, "break", "REDUCE", 20);
-            addAction(26, "ASSIGNMENT", "ERROR", None);
-            addAction(27, "$", "REDUCE", 3);
-            addAction(28, "end", "REDUCE", 4);
-            addAction(29, ";", "SHIFT", 40);
-            addAction(30, "id", "SHIFT", 44);
-            addAction(30, "int", "SHIFT", 24);
-            addAction(30, "integer", "SHIFT", 25);
-            addAction(30, "DECLARATION", "ERROR", None);
-            addAction(30, "TYPE", "ERROR", None);
-            addAction(30, "ID_LIST", "ERROR", None);
-            addAction(31, "id", "SHIFT", 49);
-            addAction(31, "number_literal", "SHIFT", 48);
-            addAction(31, "TERM", "ERROR", None);
-            addAction(31, "FACTOR", "ERROR", None);
-            addAction(31, "COM_STMT", "ERROR", None);
-            addAction(32, "string_literal", "SHIFT", 51);
-            addAction(32, "identifier", "SHIFT", 52);
-            addAction(32, "PRINT_CONTENT", "ERROR", None);
-            addAction(33, "string_literal", "SHIFT", 51);
-            addAction(33, "identifier", "SHIFT", 52);
-            addAction(33, "PRINT_CONTENT", "ERROR", None);
-            addAction(34, "id", "SHIFT", 49);
-            addAction(34, "number_literal", "SHIFT", 48);
-            addAction(34, "TERM", "ERROR", None);
-            addAction(34, "FACTOR", "ERROR", None);
-            addAction(34, "COM_STMT", "ERROR", None);
-            addAction(35, "id", "SHIFT", 58);
-            addAction(35, "int", "SHIFT", 24);
-            addAction(35, "integer", "SHIFT", 25);
-            addAction(35, "DECLARATION", "ERROR", None);
-            addAction(35, "TYPE", "ERROR", None);
-            addAction(35, "ID_LIST", "ERROR", None);
-            addAction(36, "id", "REDUCE", 42);
-            addAction(36, "end", "REDUCE", 42);
-            addAction(36, "int", "REDUCE", 42);
-            addAction(36, "integer", "REDUCE", 42);
-            addAction(36, "if", "REDUCE", 42);
-            addAction(36, "print_line", "REDUCE", 42);
-            addAction(36, "display", "REDUCE", 42);
-            addAction(36, "while", "REDUCE", 42);
-            addAction(36, "for", "REDUCE", 42);
-            addAction(36, "break", "REDUCE", 42);
-            addAction(37, "id", "REDUCE", 15);
-            addAction(37, "end", "REDUCE", 15);
-            addAction(37, ";", "REDUCE", 15);
-            addAction(37, ",", "REDUCE", 15);
-            addAction(37, "int", "REDUCE", 15);
-            addAction(37, "integer", "REDUCE", 15);
-            addAction(37, "if", "REDUCE", 15);
-            addAction(37, "print_line", "REDUCE", 15);
-            addAction(37, "display", "REDUCE", 15);
-            addAction(37, "while", "REDUCE", 15);
-            addAction(37, "for", "REDUCE", 15);
-            addAction(37, "break", "REDUCE", 15);
-            addAction(38, "id", "REDUCE", 22);
-            addAction(38, "end", "REDUCE", 22);
-            addAction(38, ";", "REDUCE", 22);
-            addAction(38, ",", "REDUCE", 22);
-            addAction(38, "int", "REDUCE", 22);
-            addAction(38, "integer", "REDUCE", 22);
-            addAction(38, "if", "REDUCE", 22);
-            addAction(38, "print_line", "REDUCE", 22);
-            addAction(38, "display", "REDUCE", 22);
-            addAction(38, "while", "REDUCE", 22);
-            addAction(38, "for", "REDUCE", 22);
-            addAction(38, "break", "REDUCE", 22);
-            addAction(38, "ID_LIST'", "ERROR", None);
-            addAction(39, "id", "SHIFT", 64);
-            addAction(39, "number_literal", "SHIFT", 63);
-            addAction(39, "OP_STMT", "ERROR", None);
-            addAction(39, "TERM", "ERROR", None);
-            addAction(39, "FACTOR", "ERROR", None);
-            addAction(40, "id", "REDUCE", 12);
-            addAction(40, "end", "REDUCE", 12);
-            addAction(40, "int", "REDUCE", 12);
-            addAction(40, "integer", "REDUCE", 12);
-            addAction(40, "if", "REDUCE", 12);
-            addAction(40, "print_line", "REDUCE", 12);
-            addAction(40, "display", "REDUCE", 12);
-            addAction(40, "while", "REDUCE", 12);
-            addAction(40, "for", "REDUCE", 12);
-            addAction(40, "break", "REDUCE", 12);
-            addAction(41, ";", "REDUCE", 14);
-            addAction(41, ",", "SHIFT", 30);
-            addAction(41, "DECLARATION_LIST'", "ERROR", None);
-            addAction(42, "id", "SHIFT", 44);
-            addAction(42, "ID_LIST", "ERROR", None);
-            addAction(43, ";", "REDUCE", 16);
-            addAction(43, ",", "REDUCE", 16);
-            addAction(44, ";", "REDUCE", 20);
-            addAction(44, ",", "REDUCE", 20);
-            addAction(44, "=", "SHIFT", 68);
-            addAction(44, "ASSIGNMENT", "ERROR", None);
-            addAction(45, ")", "SHIFT", 69);
-            addAction(46, ")", "REDUCE", 46);
-            addAction(46, "<", "SHIFT", 71);
-            addAction(46, "==", "SHIFT", 72);
-            addAction(46, "COM_STMT'", "ERROR", None);
-            addAction(47, "*", "SHIFT", 74);
-            addAction(47, ")", "REDUCE", 29);
-            addAction(47, "<", "REDUCE", 29);
-            addAction(47, "==", "REDUCE", 29);
-            addAction(47, "TERM'", "ERROR", None);
-            addAction(48, "*", "REDUCE", 30);
-            addAction(48, ")", "REDUCE", 30);
-            addAction(48, "<", "REDUCE", 30);
-            addAction(48, "==", "REDUCE", 30);
-            addAction(49, "*", "REDUCE", 31);
-            addAction(49, ")", "REDUCE", 31);
-            addAction(49, "<", "REDUCE", 31);
-            addAction(49, "==", "REDUCE", 31);
-            addAction(50, ")", "SHIFT", 75);
-            addAction(51, ")", "REDUCE", 32);
-            addAction(52, ")", "REDUCE", 33);
-            addAction(53, ")", "SHIFT", 76);
-            addAction(54, ")", "SHIFT", 77);
-            addAction(55, "id", "SHIFT", 82);
-            addAction(55, "number_literal", "SHIFT", 81);
-            addAction(55, "TERM", "ERROR", None);
-            addAction(55, "FACTOR", "ERROR", None);
-            addAction(55, "COM_STMT", "ERROR", None);
-            addAction(56, "id", "SHIFT", 58);
-            addAction(56, "ID_LIST", "ERROR", None);
-            addAction(57, "id", "REDUCE", 16);
-            addAction(57, "number_literal", "REDUCE", 16);
-            addAction(58, "id", "REDUCE", 20);
-            addAction(58, "=", "SHIFT", 85);
-            addAction(58, "number_literal", "REDUCE", 20);
-            addAction(58, "ASSIGNMENT", "ERROR", None);
-            addAction(59, "id", "REDUCE", 21);
-            addAction(59, "end", "REDUCE", 21);
-            addAction(59, ";", "REDUCE", 21);
-            addAction(59, ",", "REDUCE", 21);
-            addAction(59, "int", "REDUCE", 21);
-            addAction(59, "integer", "REDUCE", 21);
-            addAction(59, "if", "REDUCE", 21);
-            addAction(59, "print_line", "REDUCE", 21);
-            addAction(59, "display", "REDUCE", 21);
-            addAction(59, "while", "REDUCE", 21);
-            addAction(59, "for", "REDUCE", 21);
-            addAction(59, "break", "REDUCE", 21);
-            addAction(60, "id", "REDUCE", 19);
-            addAction(60, "end", "REDUCE", 19);
-            addAction(60, ";", "REDUCE", 19);
-            addAction(60, ",", "REDUCE", 19);
-            addAction(60, "int", "REDUCE", 19);
-            addAction(60, "integer", "REDUCE", 19);
-            addAction(60, "if", "REDUCE", 19);
-            addAction(60, "print_line", "REDUCE", 19);
-            addAction(60, "display", "REDUCE", 19);
-            addAction(60, "while", "REDUCE", 19);
-            addAction(60, "for", "REDUCE", 19);
-            addAction(60, "break", "REDUCE", 19);
-            addAction(61, "id", "REDUCE", 26);
-            addAction(61, "end", "REDUCE", 26);
-            addAction(61, ";", "REDUCE", 26);
-            addAction(61, ",", "REDUCE", 26);
-            addAction(61, "int", "REDUCE", 26);
-            addAction(61, "integer", "REDUCE", 26);
-            addAction(61, "+", "SHIFT", 87);
-            addAction(61, "++", "SHIFT", 88);
-            addAction(61, "if", "REDUCE", 26);
-            addAction(61, "print_line", "REDUCE", 26);
-            addAction(61, "display", "REDUCE", 26);
-            addAction(61, "while", "REDUCE", 26);
-            addAction(61, "for", "REDUCE", 26);
-            addAction(61, "break", "REDUCE", 26);
-            addAction(61, "OP_STMT'", "ERROR", None);
-            addAction(62, "id", "REDUCE", 29);
-            addAction(62, "end", "REDUCE", 29);
-            addAction(62, ";", "REDUCE", 29);
-            addAction(62, ",", "REDUCE", 29);
-            addAction(62, "int", "REDUCE", 29);
-            addAction(62, "integer", "REDUCE", 29);
-            addAction(62, "+", "REDUCE", 29);
-            addAction(62, "++", "REDUCE", 29);
-            addAction(62, "*", "SHIFT", 90);
-            addAction(62, "if", "REDUCE", 29);
-            addAction(62, "print_line", "REDUCE", 29);
-            addAction(62, "display", "REDUCE", 29);
-            addAction(62, "while", "REDUCE", 29);
-            addAction(62, "for", "REDUCE", 29);
-            addAction(62, "break", "REDUCE", 29);
-            addAction(62, "TERM'", "ERROR", None);
-            addAction(63, "id", "REDUCE", 30);
-            addAction(63, "end", "REDUCE", 30);
-            addAction(63, ";", "REDUCE", 30);
-            addAction(63, ",", "REDUCE", 30);
-            addAction(63, "int", "REDUCE", 30);
-            addAction(63, "integer", "REDUCE", 30);
-            addAction(63, "+", "REDUCE", 30);
-            addAction(63, "++", "REDUCE", 30);
-            addAction(63, "*", "REDUCE", 30);
-            addAction(63, "if", "REDUCE", 30);
-            addAction(63, "print_line", "REDUCE", 30);
-            addAction(63, "display", "REDUCE", 30);
-            addAction(63, "while", "REDUCE", 30);
-            addAction(63, "for", "REDUCE", 30);
-            addAction(63, "break", "REDUCE", 30);
-            addAction(64, "id", "REDUCE", 31);
-            addAction(64, "end", "REDUCE", 31);
-            addAction(64, ";", "REDUCE", 31);
-            addAction(64, ",", "REDUCE", 31);
-            addAction(64, "int", "REDUCE", 31);
-            addAction(64, "integer", "REDUCE", 31);
-            addAction(64, "+", "REDUCE", 31);
-            addAction(64, "++", "REDUCE", 31);
-            addAction(64, "*", "REDUCE", 31);
-            addAction(64, "if", "REDUCE", 31);
-            addAction(64, "print_line", "REDUCE", 31);
-            addAction(64, "display", "REDUCE", 31);
-            addAction(64, "while", "REDUCE", 31);
-            addAction(64, "for", "REDUCE", 31);
-            addAction(64, "break", "REDUCE", 31);
-            addAction(65, ";", "REDUCE", 13);
-            addAction(66, ";", "REDUCE", 15);
-            addAction(66, ",", "REDUCE", 15);
-            addAction(67, ";", "REDUCE", 22);
-            addAction(67, ",", "REDUCE", 22);
-            addAction(67, "ID_LIST'", "ERROR", None);
-            addAction(68, "id", "SHIFT", 96);
-            addAction(68, "number_literal", "SHIFT", 95);
-            addAction(68, "OP_STMT", "ERROR", None);
-            addAction(68, "TERM", "ERROR", None);
-            addAction(68, "FACTOR", "ERROR", None);
-            addAction(69, "begin", "SHIFT", 98);
-            addAction(69, "BEGIN_STMT", "ERROR", None);
-            addAction(70, ")", "REDUCE", 43);
-            addAction(71, "id", "SHIFT", 101);
-            addAction(71, "number_literal", "SHIFT", 100);
-            addAction(71, "FACTOR", "ERROR", None);
-            addAction(72, "id", "SHIFT", 101);
-            addAction(72, "number_literal", "SHIFT", 100);
-            addAction(72, "FACTOR", "ERROR", None);
-            addAction(73, ")", "REDUCE", 27);
-            addAction(73, "<", "REDUCE", 27);
-            addAction(73, "==", "REDUCE", 27);
-            addAction(74, "id", "SHIFT", 49);
-            addAction(74, "number_literal", "SHIFT", 48);
-            addAction(74, "FACTOR", "ERROR", None);
-            addAction(75, ";", "SHIFT", 104);
-            addAction(76, ";", "SHIFT", 105);
-            addAction(77, "begin", "SHIFT", 107);
-            addAction(77, "BEGIN_STMT", "ERROR", None);
-            addAction(78, ";", "SHIFT", 108);
-            addAction(79, ";", "REDUCE", 46);
-            addAction(79, "<", "SHIFT", 110);
-            addAction(79, "==", "SHIFT", 111);
-            addAction(79, "COM_STMT'", "ERROR", None);
-            addAction(80, ";", "REDUCE", 29);
-            addAction(80, "*", "SHIFT", 113);
-            addAction(80, "<", "REDUCE", 29);
-            addAction(80, "==", "REDUCE", 29);
-            addAction(80, "TERM'", "ERROR", None);
-            addAction(81, ";", "REDUCE", 30);
-            addAction(81, "*", "REDUCE", 30);
-            addAction(81, "<", "REDUCE", 30);
-            addAction(81, "==", "REDUCE", 30);
-            addAction(82, ";", "REDUCE", 31);
-            addAction(82, "*", "REDUCE", 31);
-            addAction(82, "<", "REDUCE", 31);
-            addAction(82, "==", "REDUCE", 31);
-            addAction(83, "id", "REDUCE", 15);
-            addAction(83, "number_literal", "REDUCE", 15);
-            addAction(84, "id", "REDUCE", 22);
-            addAction(84, "number_literal", "REDUCE", 22);
-            addAction(84, "ID_LIST'", "ERROR", None);
-            addAction(85, "id", "SHIFT", 119);
-            addAction(85, "number_literal", "SHIFT", 118);
-            addAction(85, "OP_STMT", "ERROR", None);
-            addAction(85, "TERM", "ERROR", None);
-            addAction(85, "FACTOR", "ERROR", None);
-            addAction(86, "id", "REDUCE", 23);
-            addAction(86, "end", "REDUCE", 23);
-            addAction(86, ";", "REDUCE", 23);
-            addAction(86, ",", "REDUCE", 23);
-            addAction(86, "int", "REDUCE", 23);
-            addAction(86, "integer", "REDUCE", 23);
-            addAction(86, "if", "REDUCE", 23);
-            addAction(86, "print_line", "REDUCE", 23);
-            addAction(86, "display", "REDUCE", 23);
-            addAction(86, "while", "REDUCE", 23);
-            addAction(86, "for", "REDUCE", 23);
-            addAction(86, "break", "REDUCE", 23);
-            addAction(87, "id", "SHIFT", 64);
-            addAction(87, "number_literal", "SHIFT", 63);
-            addAction(87, "TERM", "ERROR", None);
-            addAction(87, "FACTOR", "ERROR", None);
-            addAction(88, "id", "REDUCE", 25);
-            addAction(88, "end", "REDUCE", 25);
-            addAction(88, ";", "REDUCE", 25);
-            addAction(88, ",", "REDUCE", 25);
-            addAction(88, "int", "REDUCE", 25);
-            addAction(88, "integer", "REDUCE", 25);
-            addAction(88, "if", "REDUCE", 25);
-            addAction(88, "print_line", "REDUCE", 25);
-            addAction(88, "display", "REDUCE", 25);
-            addAction(88, "while", "REDUCE", 25);
-            addAction(88, "for", "REDUCE", 25);
-            addAction(88, "break", "REDUCE", 25);
-            addAction(89, "id", "REDUCE", 27);
-            addAction(89, "end", "REDUCE", 27);
-            addAction(89, ";", "REDUCE", 27);
-            addAction(89, ",", "REDUCE", 27);
-            addAction(89, "int", "REDUCE", 27);
-            addAction(89, "integer", "REDUCE", 27);
-            addAction(89, "+", "REDUCE", 27);
-            addAction(89, "++", "REDUCE", 27);
-            addAction(89, "if", "REDUCE", 27);
-            addAction(89, "print_line", "REDUCE", 27);
-            addAction(89, "display", "REDUCE", 27);
-            addAction(89, "while", "REDUCE", 27);
-            addAction(89, "for", "REDUCE", 27);
-            addAction(89, "break", "REDUCE", 27);
-            addAction(90, "id", "SHIFT", 64);
-            addAction(90, "number_literal", "SHIFT", 63);
-            addAction(90, "FACTOR", "ERROR", None);
-            addAction(91, ";", "REDUCE", 21);
-            addAction(91, ",", "REDUCE", 21);
-            addAction(92, ";", "REDUCE", 19);
-            addAction(92, ",", "REDUCE", 19);
-            addAction(93, ";", "REDUCE", 26);
-            addAction(93, ",", "REDUCE", 26);
-            addAction(93, "+", "SHIFT", 123);
-            addAction(93, "++", "SHIFT", 124);
-            addAction(93, "OP_STMT'", "ERROR", None);
-            addAction(94, ";", "REDUCE", 29);
-            addAction(94, ",", "REDUCE", 29);
-            addAction(94, "+", "REDUCE", 29);
-            addAction(94, "++", "REDUCE", 29);
-            addAction(94, "*", "SHIFT", 126);
-            addAction(94, "TERM'", "ERROR", None);
-            addAction(95, ";", "REDUCE", 30);
-            addAction(95, ",", "REDUCE", 30);
-            addAction(95, "+", "REDUCE", 30);
-            addAction(95, "++", "REDUCE", 30);
-            addAction(95, "*", "REDUCE", 30);
-            addAction(96, ";", "REDUCE", 31);
-            addAction(96, ",", "REDUCE", 31);
-            addAction(96, "+", "REDUCE", 31);
-            addAction(96, "++", "REDUCE", 31);
-            addAction(96, "*", "REDUCE", 31);
-            addAction(97, "id", "REDUCE", 37);
-            addAction(97, "end", "REDUCE", 37);
-            addAction(97, "int", "REDUCE", 37);
-            addAction(97, "integer", "REDUCE", 37);
-            addAction(97, "if", "REDUCE", 37);
-            addAction(97, "else_if", "SHIFT", 128);
-            addAction(97, "else", "SHIFT", 129);
-            addAction(97, "print_line", "REDUCE", 37);
-            addAction(97, "display", "REDUCE", 37);
-            addAction(97, "while", "REDUCE", 37);
-            addAction(97, "for", "REDUCE", 37);
-            addAction(97, "break", "REDUCE", 37);
-            addAction(97, "IF_STMT'", "ERROR", None);
-            addAction(98, "id", "SHIFT", 26);
-            addAction(98, "end", "REDUCE", 5);
-            addAction(98, "int", "SHIFT", 24);
-            addAction(98, "integer", "SHIFT", 25);
-            addAction(98, "if", "SHIFT", 16);
-            addAction(98, "print_line", "SHIFT", 17);
-            addAction(98, "display", "SHIFT", 18);
-            addAction(98, "while", "SHIFT", 19);
-            addAction(98, "for", "SHIFT", 20);
-            addAction(98, "break", "SHIFT", 21);
-            addAction(98, "STMTS", "ERROR", None);
-            addAction(98, "STMT", "ERROR", None);
-            addAction(98, "DECLARATION_LIST", "ERROR", None);
-            addAction(98, "DECLARATION", "ERROR", None);
-            addAction(98, "TYPE", "ERROR", None);
-            addAction(98, "ID_LIST", "ERROR", None);
-            addAction(98, "IF_STMT", "ERROR", None);
-            addAction(98, "PRINT_STMT", "ERROR", None);
-            addAction(98, "WHILE_STMT", "ERROR", None);
-            addAction(98, "FOR_STMT", "ERROR", None);
-            addAction(98, "BREAK_STMT", "ERROR", None);
-            addAction(99, ")", "REDUCE", 44);
-            addAction(100, ")", "REDUCE", 30);
-            addAction(101, ")", "REDUCE", 31);
-            addAction(102, ")", "REDUCE", 45);
-            addAction(103, "*", "SHIFT", 74);
-            addAction(103, ")", "REDUCE", 29);
-            addAction(103, "<", "REDUCE", 29);
-            addAction(103, "==", "REDUCE", 29);
-            addAction(103, "TERM'", "ERROR", None);
-            addAction(104, "id", "REDUCE", 38);
-            addAction(104, "end", "REDUCE", 38);
-            addAction(104, "int", "REDUCE", 38);
-            addAction(104, "integer", "REDUCE", 38);
-            addAction(104, "if", "REDUCE", 38);
-            addAction(104, "print_line", "REDUCE", 38);
-            addAction(104, "display", "REDUCE", 38);
-            addAction(104, "while", "REDUCE", 38);
-            addAction(104, "for", "REDUCE", 38);
-            addAction(104, "break", "REDUCE", 38);
-            addAction(105, "id", "REDUCE", 39);
-            addAction(105, "end", "REDUCE", 39);
-            addAction(105, "int", "REDUCE", 39);
-            addAction(105, "integer", "REDUCE", 39);
-            addAction(105, "if", "REDUCE", 39);
-            addAction(105, "print_line", "REDUCE", 39);
-            addAction(105, "display", "REDUCE", 39);
-            addAction(105, "while", "REDUCE", 39);
-            addAction(105, "for", "REDUCE", 39);
-            addAction(105, "break", "REDUCE", 39);
-            addAction(106, "id", "REDUCE", 40);
-            addAction(106, "end", "REDUCE", 40);
-            addAction(106, "int", "REDUCE", 40);
-            addAction(106, "integer", "REDUCE", 40);
-            addAction(106, "if", "REDUCE", 40);
-            addAction(106, "print_line", "REDUCE", 40);
-            addAction(106, "display", "REDUCE", 40);
-            addAction(106, "while", "REDUCE", 40);
-            addAction(106, "for", "REDUCE", 40);
-            addAction(106, "break", "REDUCE", 40);
-            addAction(107, "id", "SHIFT", 26);
-            addAction(107, "end", "REDUCE", 5);
-            addAction(107, "int", "SHIFT", 24);
-            addAction(107, "integer", "SHIFT", 25);
-            addAction(107, "if", "SHIFT", 16);
-            addAction(107, "print_line", "SHIFT", 17);
-            addAction(107, "display", "SHIFT", 18);
-            addAction(107, "while", "SHIFT", 19);
-            addAction(107, "for", "SHIFT", 20);
-            addAction(107, "break", "SHIFT", 21);
-            addAction(107, "STMTS", "ERROR", None);
-            addAction(107, "STMT", "ERROR", None);
-            addAction(107, "DECLARATION_LIST", "ERROR", None);
-            addAction(107, "DECLARATION", "ERROR", None);
-            addAction(107, "TYPE", "ERROR", None);
-            addAction(107, "ID_LIST", "ERROR", None);
-            addAction(107, "IF_STMT", "ERROR", None);
-            addAction(107, "PRINT_STMT", "ERROR", None);
-            addAction(107, "WHILE_STMT", "ERROR", None);
-            addAction(107, "FOR_STMT", "ERROR", None);
-            addAction(107, "BREAK_STMT", "ERROR", None);
-            addAction(108, "id", "SHIFT", 137);
-            addAction(108, "number_literal", "SHIFT", 136);
-            addAction(108, "OP_STMT", "ERROR", None);
-            addAction(108, "TERM", "ERROR", None);
-            addAction(108, "FACTOR", "ERROR", None);
-            addAction(109, ";", "REDUCE", 43);
-            addAction(110, "id", "SHIFT", 140);
-            addAction(110, "number_literal", "SHIFT", 139);
-            addAction(110, "FACTOR", "ERROR", None);
-            addAction(111, "id", "SHIFT", 140);
-            addAction(111, "number_literal", "SHIFT", 139);
-            addAction(111, "FACTOR", "ERROR", None);
-            addAction(112, ";", "REDUCE", 27);
-            addAction(112, "<", "REDUCE", 27);
-            addAction(112, "==", "REDUCE", 27);
-            addAction(113, "id", "SHIFT", 82);
-            addAction(113, "number_literal", "SHIFT", 81);
-            addAction(113, "FACTOR", "ERROR", None);
-            addAction(114, "id", "REDUCE", 21);
-            addAction(114, "number_literal", "REDUCE", 21);
-            addAction(115, "id", "REDUCE", 19);
-            addAction(115, "number_literal", "REDUCE", 19);
-            addAction(116, "id", "REDUCE", 26);
-            addAction(116, "+", "SHIFT", 144);
-            addAction(116, "++", "SHIFT", 145);
-            addAction(116, "number_literal", "REDUCE", 26);
-            addAction(116, "OP_STMT'", "ERROR", None);
-            addAction(117, "id", "REDUCE", 29);
-            addAction(117, "+", "REDUCE", 29);
-            addAction(117, "++", "REDUCE", 29);
-            addAction(117, "*", "SHIFT", 147);
-            addAction(117, "number_literal", "REDUCE", 29);
-            addAction(117, "TERM'", "ERROR", None);
-            addAction(118, "id", "REDUCE", 30);
-            addAction(118, "+", "REDUCE", 30);
-            addAction(118, "++", "REDUCE", 30);
-            addAction(118, "*", "REDUCE", 30);
-            addAction(118, "number_literal", "REDUCE", 30);
-            addAction(119, "id", "REDUCE", 31);
-            addAction(119, "+", "REDUCE", 31);
-            addAction(119, "++", "REDUCE", 31);
-            addAction(119, "*", "REDUCE", 31);
-            addAction(119, "number_literal", "REDUCE", 31);
-            addAction(120, "id", "REDUCE", 26);
-            addAction(120, "end", "REDUCE", 26);
-            addAction(120, ";", "REDUCE", 26);
-            addAction(120, ",", "REDUCE", 26);
-            addAction(120, "int", "REDUCE", 26);
-            addAction(120, "integer", "REDUCE", 26);
-            addAction(120, "+", "SHIFT", 87);
-            addAction(120, "++", "SHIFT", 88);
-            addAction(120, "if", "REDUCE", 26);
-            addAction(120, "print_line", "REDUCE", 26);
-            addAction(120, "display", "REDUCE", 26);
-            addAction(120, "while", "REDUCE", 26);
-            addAction(120, "for", "REDUCE", 26);
-            addAction(120, "break", "REDUCE", 26);
-            addAction(120, "OP_STMT'", "ERROR", None);
-            addAction(121, "id", "REDUCE", 29);
-            addAction(121, "end", "REDUCE", 29);
-            addAction(121, ";", "REDUCE", 29);
-            addAction(121, ",", "REDUCE", 29);
-            addAction(121, "int", "REDUCE", 29);
-            addAction(121, "integer", "REDUCE", 29);
-            addAction(121, "+", "REDUCE", 29);
-            addAction(121, "++", "REDUCE", 29);
-            addAction(121, "*", "SHIFT", 90);
-            addAction(121, "if", "REDUCE", 29);
-            addAction(121, "print_line", "REDUCE", 29);
-            addAction(121, "display", "REDUCE", 29);
-            addAction(121, "while", "REDUCE", 29);
-            addAction(121, "for", "REDUCE", 29);
-            addAction(121, "break", "REDUCE", 29);
-            addAction(121, "TERM'", "ERROR", None);
-            addAction(122, ";", "REDUCE", 23);
-            addAction(122, ",", "REDUCE", 23);
-            addAction(123, "id", "SHIFT", 96);
-            addAction(123, "number_literal", "SHIFT", 95);
-            addAction(123, "TERM", "ERROR", None);
-            addAction(123, "FACTOR", "ERROR", None);
-            addAction(124, ";", "REDUCE", 25);
-            addAction(124, ",", "REDUCE", 25);
-            addAction(125, ";", "REDUCE", 27);
-            addAction(125, ",", "REDUCE", 27);
-            addAction(125, "+", "REDUCE", 27);
-            addAction(125, "++", "REDUCE", 27);
-            addAction(126, "id", "SHIFT", 96);
-            addAction(126, "number_literal", "SHIFT", 95);
-            addAction(126, "FACTOR", "ERROR", None);
-            addAction(127, "id", "REDUCE", 34);
-            addAction(127, "end", "REDUCE", 34);
-            addAction(127, "int", "REDUCE", 34);
-            addAction(127, "integer", "REDUCE", 34);
-            addAction(127, "if", "REDUCE", 34);
-            addAction(127, "print_line", "REDUCE", 34);
-            addAction(127, "display", "REDUCE", 34);
-            addAction(127, "while", "REDUCE", 34);
-            addAction(127, "for", "REDUCE", 34);
-            addAction(127, "break", "REDUCE", 34);
-            addAction(128, "(", "SHIFT", 152);
-            addAction(129, "begin", "SHIFT", 107);
-            addAction(129, "BEGIN_STMT", "ERROR", None);
-            addAction(130, "end", "SHIFT", 154);
-            addAction(131, ")", "REDUCE", 28);
-            addAction(131, "<", "REDUCE", 28);
-            addAction(131, "==", "REDUCE", 28);
-            addAction(132, "end", "SHIFT", 155);
-            addAction(133, ")", "SHIFT", 156);
-            addAction(134, "+", "SHIFT", 158);
-            addAction(134, "++", "SHIFT", 159);
-            addAction(134, ")", "REDUCE", 26);
-            addAction(134, "OP_STMT'", "ERROR", None);
-            addAction(135, "+", "REDUCE", 29);
-            addAction(135, "++", "REDUCE", 29);
-            addAction(135, "*", "SHIFT", 161);
-            addAction(135, ")", "REDUCE", 29);
-            addAction(135, "TERM'", "ERROR", None);
-            addAction(136, "+", "REDUCE", 30);
-            addAction(136, "++", "REDUCE", 30);
-            addAction(136, "*", "REDUCE", 30);
-            addAction(136, ")", "REDUCE", 30);
-            addAction(137, "+", "REDUCE", 31);
-            addAction(137, "++", "REDUCE", 31);
-            addAction(137, "*", "REDUCE", 31);
-            addAction(137, ")", "REDUCE", 31);
-            addAction(138, ";", "REDUCE", 44);
-            addAction(139, ";", "REDUCE", 30);
-            addAction(140, ";", "REDUCE", 31);
-            addAction(141, ";", "REDUCE", 45);
-            addAction(142, ";", "REDUCE", 29);
-            addAction(142, "*", "SHIFT", 113);
-            addAction(142, "<", "REDUCE", 29);
-            addAction(142, "==", "REDUCE", 29);
-            addAction(142, "TERM'", "ERROR", None);
-            addAction(143, "id", "REDUCE", 23);
-            addAction(143, "number_literal", "REDUCE", 23);
-            addAction(144, "id", "SHIFT", 119);
-            addAction(144, "number_literal", "SHIFT", 118);
-            addAction(144, "TERM", "ERROR", None);
-            addAction(144, "FACTOR", "ERROR", None);
-            addAction(145, "id", "REDUCE", 25);
-            addAction(145, "number_literal", "REDUCE", 25);
-            addAction(146, "id", "REDUCE", 27);
-            addAction(146, "+", "REDUCE", 27);
-            addAction(146, "++", "REDUCE", 27);
-            addAction(146, "number_literal", "REDUCE", 27);
-            addAction(147, "id", "SHIFT", 119);
-            addAction(147, "number_literal", "SHIFT", 118);
-            addAction(147, "FACTOR", "ERROR", None);
-            addAction(148, "id", "REDUCE", 24);
-            addAction(148, "end", "REDUCE", 24);
-            addAction(148, ";", "REDUCE", 24);
-            addAction(148, ",", "REDUCE", 24);
-            addAction(148, "int", "REDUCE", 24);
-            addAction(148, "integer", "REDUCE", 24);
-            addAction(148, "if", "REDUCE", 24);
-            addAction(148, "print_line", "REDUCE", 24);
-            addAction(148, "display", "REDUCE", 24);
-            addAction(148, "while", "REDUCE", 24);
-            addAction(148, "for", "REDUCE", 24);
-            addAction(148, "break", "REDUCE", 24);
-            addAction(149, "id", "REDUCE", 28);
-            addAction(149, "end", "REDUCE", 28);
-            addAction(149, ";", "REDUCE", 28);
-            addAction(149, ",", "REDUCE", 28);
-            addAction(149, "int", "REDUCE", 28);
-            addAction(149, "integer", "REDUCE", 28);
-            addAction(149, "+", "REDUCE", 28);
-            addAction(149, "++", "REDUCE", 28);
-            addAction(149, "if", "REDUCE", 28);
-            addAction(149, "print_line", "REDUCE", 28);
-            addAction(149, "display", "REDUCE", 28);
-            addAction(149, "while", "REDUCE", 28);
-            addAction(149, "for", "REDUCE", 28);
-            addAction(149, "break", "REDUCE", 28);
-            addAction(150, ";", "REDUCE", 26);
-            addAction(150, ",", "REDUCE", 26);
-            addAction(150, "+", "SHIFT", 123);
-            addAction(150, "++", "SHIFT", 124);
-            addAction(150, "OP_STMT'", "ERROR", None);
-            addAction(151, ";", "REDUCE", 29);
-            addAction(151, ",", "REDUCE", 29);
-            addAction(151, "+", "REDUCE", 29);
-            addAction(151, "++", "REDUCE", 29);
-            addAction(151, "*", "SHIFT", 126);
-            addAction(151, "TERM'", "ERROR", None);
-            addAction(152, "id", "SHIFT", 49);
-            addAction(152, "number_literal", "SHIFT", 48);
-            addAction(152, "TERM", "ERROR", None);
-            addAction(152, "FACTOR", "ERROR", None);
-            addAction(152, "COM_STMT", "ERROR", None);
-            addAction(153, "id", "REDUCE", 36);
-            addAction(153, "end", "REDUCE", 36);
-            addAction(153, "int", "REDUCE", 36);
-            addAction(153, "integer", "REDUCE", 36);
-            addAction(153, "if", "REDUCE", 36);
-            addAction(153, "print_line", "REDUCE", 36);
-            addAction(153, "display", "REDUCE", 36);
-            addAction(153, "while", "REDUCE", 36);
-            addAction(153, "for", "REDUCE", 36);
-            addAction(153, "break", "REDUCE", 36);
-            addAction(154, "id", "REDUCE", 3);
-            addAction(154, "end", "REDUCE", 3);
-            addAction(154, "int", "REDUCE", 3);
-            addAction(154, "integer", "REDUCE", 3);
-            addAction(154, "if", "REDUCE", 3);
-            addAction(154, "else_if", "REDUCE", 3);
-            addAction(154, "else", "REDUCE", 3);
-            addAction(154, "print_line", "REDUCE", 3);
-            addAction(154, "display", "REDUCE", 3);
-            addAction(154, "while", "REDUCE", 3);
-            addAction(154, "for", "REDUCE", 3);
-            addAction(154, "break", "REDUCE", 3);
-            addAction(155, "id", "REDUCE", 3);
-            addAction(155, "end", "REDUCE", 3);
-            addAction(155, "int", "REDUCE", 3);
-            addAction(155, "integer", "REDUCE", 3);
-            addAction(155, "if", "REDUCE", 3);
-            addAction(155, "print_line", "REDUCE", 3);
-            addAction(155, "display", "REDUCE", 3);
-            addAction(155, "while", "REDUCE", 3);
-            addAction(155, "for", "REDUCE", 3);
-            addAction(155, "break", "REDUCE", 3);
-            addAction(156, "begin", "SHIFT", 107);
-            addAction(156, "BEGIN_STMT", "ERROR", None);
-            addAction(157, ")", "REDUCE", 23);
-            addAction(158, "id", "SHIFT", 137);
-            addAction(158, "number_literal", "SHIFT", 136);
-            addAction(158, "TERM", "ERROR", None);
-            addAction(158, "FACTOR", "ERROR", None);
-            addAction(159, ")", "REDUCE", 25);
-            addAction(160, "+", "REDUCE", 27);
-            addAction(160, "++", "REDUCE", 27);
-            addAction(160, ")", "REDUCE", 27);
-            addAction(161, "id", "SHIFT", 137);
-            addAction(161, "number_literal", "SHIFT", 136);
-            addAction(161, "FACTOR", "ERROR", None);
-            addAction(162, ";", "REDUCE", 28);
-            addAction(162, "<", "REDUCE", 28);
-            addAction(162, "==", "REDUCE", 28);
-            addAction(163, "id", "REDUCE", 26);
-            addAction(163, "+", "SHIFT", 144);
-            addAction(163, "++", "SHIFT", 145);
-            addAction(163, "number_literal", "REDUCE", 26);
-            addAction(163, "OP_STMT'", "ERROR", None);
-            addAction(164, "id", "REDUCE", 29);
-            addAction(164, "+", "REDUCE", 29);
-            addAction(164, "++", "REDUCE", 29);
-            addAction(164, "*", "SHIFT", 147);
-            addAction(164, "number_literal", "REDUCE", 29);
-            addAction(164, "TERM'", "ERROR", None);
-            addAction(165, ";", "REDUCE", 24);
-            addAction(165, ",", "REDUCE", 24);
-            addAction(166, ";", "REDUCE", 28);
-            addAction(166, ",", "REDUCE", 28);
-            addAction(166, "+", "REDUCE", 28);
-            addAction(166, "++", "REDUCE", 28);
-            addAction(167, ")", "SHIFT", 173);
-            addAction(168, "id", "REDUCE", 41);
-            addAction(168, "end", "REDUCE", 41);
-            addAction(168, "int", "REDUCE", 41);
-            addAction(168, "integer", "REDUCE", 41);
-            addAction(168, "if", "REDUCE", 41);
-            addAction(168, "print_line", "REDUCE", 41);
-            addAction(168, "display", "REDUCE", 41);
-            addAction(168, "while", "REDUCE", 41);
-            addAction(168, "for", "REDUCE", 41);
-            addAction(168, "break", "REDUCE", 41);
-            addAction(169, "+", "SHIFT", 158);
-            addAction(169, "++", "SHIFT", 159);
-            addAction(169, ")", "REDUCE", 26);
-            addAction(169, "OP_STMT'", "ERROR", None);
-            addAction(170, "+", "REDUCE", 29);
-            addAction(170, "++", "REDUCE", 29);
-            addAction(170, "*", "SHIFT", 161);
-            addAction(170, ")", "REDUCE", 29);
-            addAction(170, "TERM'", "ERROR", None);
-            addAction(171, "id", "REDUCE", 24);
-            addAction(171, "number_literal", "REDUCE", 24);
-            addAction(172, "id", "REDUCE", 28);
-            addAction(172, "+", "REDUCE", 28);
-            addAction(172, "++", "REDUCE", 28);
-            addAction(172, "number_literal", "REDUCE", 28);
-            addAction(173, "begin", "SHIFT", 98);
-            addAction(173, "BEGIN_STMT", "ERROR", None);
-            addAction(174, ")", "REDUCE", 24);
-            addAction(175, "+", "REDUCE", 28);
-            addAction(175, "++", "REDUCE", 28);
-            addAction(175, ")", "REDUCE", 28);
-            addAction(176, "id", "REDUCE", 37);
-            addAction(176, "end", "REDUCE", 37);
-            addAction(176, "int", "REDUCE", 37);
-            addAction(176, "integer", "REDUCE", 37);
-            addAction(176, "if", "REDUCE", 37);
-            addAction(176, "else_if", "SHIFT", 128);
-            addAction(176, "else", "SHIFT", 129);
-            addAction(176, "print_line", "REDUCE", 37);
-            addAction(176, "display", "REDUCE", 37);
-            addAction(176, "while", "REDUCE", 37);
-            addAction(176, "for", "REDUCE", 37);
-            addAction(176, "break", "REDUCE", 37);
-            addAction(176, "IF_STMT'", "ERROR", None);
-            addAction(177, "id", "REDUCE", 35);
-            addAction(177, "end", "REDUCE", 35);
-            addAction(177, "int", "REDUCE", 35);
-            addAction(177, "integer", "REDUCE", 35);
-            addAction(177, "if", "REDUCE", 35);
-            addAction(177, "print_line", "REDUCE", 35);
-            addAction(177, "display", "REDUCE", 35);
-            addAction(177, "while", "REDUCE", 35);
-            addAction(177, "for", "REDUCE", 35);
-            addAction(177, "break", "REDUCE", 35);
-        }
+        addAction(3, "program", "SHIFT", 3)
+        addAction(5, "begin", "SHIFT", 5)
+        addAction(6, "id", "SHIFT", 6)
+        addAction(7, "$", "REDUCE", 1)
+        addAction(8, "id", "SHIFT", 26)
+        addAction(8, "end", "REDUCE", 5)
+        addAction(8, "int", "SHIFT", 24)
+        addAction(8, "integer", "SHIFT", 25)
+        addAction(8, "if", "SHIFT", 16)
+        addAction(8, "print_line", "SHIFT", 17)
+        addAction(8, "display", "SHIFT", 18)
+        addAction(8, "while", "SHIFT", 19)
+        addAction(8, "for", "SHIFT", 20)
+        addAction(8, "break", "SHIFT", 21)
+        addAction(9, "begin", "REDUCE", 2)
+        addAction(10, "end", "SHIFT", 27)
+        addAction(11, "id", "SHIFT", 26)
+        addAction(11, "end", "REDUCE", 5)
+        addAction(11, "int", "SHIFT", 24)
+        addAction(11, "integer", "SHIFT", 25)
+        addAction(11, "if", "SHIFT", 16)
+        addAction(11, "print_line", "SHIFT", 17)
+        addAction(11, "display", "SHIFT", 18)
+        addAction(11, "while", "SHIFT", 19)
+        addAction(11, "for", "SHIFT", 20)
+        addAction(11, "break", "SHIFT", 21)
+        addAction(12, "id", "REDUCE", 6)
+        addAction(12, "end", "REDUCE", 6)
+        addAction(12, "int", "REDUCE", 6)
+        addAction(12, "integer", "REDUCE", 6)
+        addAction(12, "if", "REDUCE", 6)
+        addAction(12, "print_line", "REDUCE", 6)
+        addAction(12, "display", "REDUCE", 6)
+        addAction(12, "while", "REDUCE", 6)
+        addAction(12, "for", "REDUCE", 6)
+        addAction(12, "break", "REDUCE", 6)
+        addAction(13, "id", "REDUCE", 7)
+        addAction(13, "end", "REDUCE", 7)
+        addAction(13, "int", "REDUCE", 7)
+        addAction(13, "integer", "REDUCE", 7)
+        addAction(13, "if", "REDUCE", 7)
+        addAction(13, "print_line", "REDUCE", 7)
+        addAction(13, "display", "REDUCE", 7)
+        addAction(13, "while", "REDUCE", 7)
+        addAction(13, "for", "REDUCE", 7)
+        addAction(13, "break", "REDUCE", 7)
+        addAction(14, "id", "REDUCE", 8)
+        addAction(14, "end", "REDUCE", 8)
+        addAction(14, "int", "REDUCE", 8)
+        addAction(14, "integer", "REDUCE", 8)
+        addAction(14, "if", "REDUCE", 8)
+        addAction(14, "print_line", "REDUCE", 8)
+        addAction(14, "display", "REDUCE", 8)
+        addAction(14, "while", "REDUCE", 8)
+        addAction(14, "for", "REDUCE", 8)
+        addAction(14, "break", "REDUCE", 8)
+        addAction(15, "id", "REDUCE", 9)
+        addAction(15, "end", "REDUCE", 9)
+        addAction(15, "int", "REDUCE", 9)
+        addAction(15, "integer", "REDUCE", 9)
+        addAction(15, "if", "REDUCE", 9)
+        addAction(15, "print_line", "REDUCE", 9)
+        addAction(15, "display", "REDUCE", 9)
+        addAction(15, "while", "REDUCE", 9)
+        addAction(15, "for", "REDUCE", 9)
+        addAction(15, "break", "REDUCE", 9)
+        addAction(16, "id", "REDUCE", 10)
+        addAction(16, "end", "REDUCE", 10)
+        addAction(16, "int", "REDUCE", 10)
+        addAction(16, "integer", "REDUCE", 10)
+        addAction(16, "if", "REDUCE", 10)
+        addAction(16, "print_line", "REDUCE", 10)
+        addAction(16, "display", "REDUCE", 10)
+        addAction(16, "while", "REDUCE", 10)
+        addAction(16, "for", "REDUCE", 10)
+        addAction(16, "break", "REDUCE", 10)
+        addAction(17, "id", "REDUCE", 11)
+        addAction(17, "end", "REDUCE", 11)
+        addAction(17, "int", "REDUCE", 11)
+        addAction(17, "integer", "REDUCE", 11)
+        addAction(17, "if", "REDUCE", 11)
+        addAction(17, "print_line", "REDUCE", 11)
+        addAction(17, "display", "REDUCE", 11)
+        addAction(17, "while", "REDUCE", 11)
+        addAction(17, "for", "REDUCE", 11)
+        addAction(17, "break", "REDUCE", 11)
+        addAction(18, ";", "REDUCE", 14)
+        addAction(18, ",", "SHIFT", 30)
+        addAction(19, "(", "SHIFT", 31)
+        addAction(20, "(", "SHIFT", 32)
+        addAction(21, "(", "SHIFT", 33)
+        addAction(22, "(", "SHIFT", 34)
+        addAction(23, "(", "SHIFT", 35)
+        addAction(24, ";", "SHIFT", 36)
+        addAction(25, "id", "SHIFT", 26)
+        addAction(26, "id", "REDUCE", 16)
+        addAction(26, "end", "REDUCE", 16)
+        addAction(26, ";", "REDUCE", 16)
+        addAction(26, ",", "REDUCE", 16)
+        addAction(26, "int", "REDUCE", 16)
+        addAction(26, "integer", "REDUCE", 16)
+        addAction(26, "if", "REDUCE", 16)
+        addAction(26, "print_line", "REDUCE", 16)
+        addAction(26, "display", "REDUCE", 16)
+        addAction(26, "while", "REDUCE", 16)
+        addAction(26, "for", "REDUCE", 16)
+        addAction(26, "break", "REDUCE", 16)
+        addAction(27, "id", "REDUCE", 17)
+        addAction(28, "id", "REDUCE", 18)
+        addAction(29, "id", "REDUCE", 20)
+        addAction(29, "end", "REDUCE", 20)
+        addAction(29, ";", "REDUCE", 20)
+        addAction(29, ",", "REDUCE", 20)
+        addAction(29, "int", "REDUCE", 20)
+        addAction(29, "integer", "REDUCE", 20)
+        addAction(29, "=", "SHIFT", 39)
+        addAction(29, "if", "REDUCE", 20)
+        addAction(29, "print_line", "REDUCE", 20)
+        addAction(29, "display", "REDUCE", 20)
+        addAction(29, "while", "REDUCE", 20)
+        addAction(29, "for", "REDUCE", 20)
+        addAction(29, "break", "REDUCE", 20)
+        addAction(30, "$", "REDUCE", 3)
+        addAction(31, "end", "REDUCE", 4)
+        addAction(32, ";", "SHIFT", 40)
+        addAction(33, "id", "SHIFT", 44)
+        addAction(33, "int", "SHIFT", 24)
+        addAction(33, "integer", "SHIFT", 25)
+        addAction(34, "id", "SHIFT", 49)
+        addAction(34, "number_literal", "SHIFT", 48)
+        addAction(35, "string_literal", "SHIFT", 51)
+        addAction(35, "identifier", "SHIFT", 52)
+        addAction(36, "string_literal", "SHIFT", 51)
+        addAction(36, "identifier", "SHIFT", 52)
+        addAction(37, "id", "SHIFT", 49)
+        addAction(37, "number_literal", "SHIFT", 48)
+        addAction(38, "id", "SHIFT", 58)
+        addAction(38, "int", "SHIFT", 24)
+        addAction(38, "integer", "SHIFT", 25)
+        addAction(39, "id", "REDUCE", 42)
+        addAction(39, "end", "REDUCE", 42)
+        addAction(39, "int", "REDUCE", 42)
+        addAction(39, "integer", "REDUCE", 42)
+        addAction(39, "if", "REDUCE", 42)
+        addAction(39, "print_line", "REDUCE", 42)
+        addAction(39, "display", "REDUCE", 42)
+        addAction(39, "while", "REDUCE", 42)
+        addAction(39, "for", "REDUCE", 42)
+        addAction(39, "break", "REDUCE", 42)
+        addAction(40, "id", "REDUCE", 15)
+        addAction(40, "end", "REDUCE", 15)
+        addAction(40, ";", "REDUCE", 15)
+        addAction(40, ",", "REDUCE", 15)
+        addAction(40, "int", "REDUCE", 15)
+        addAction(40, "integer", "REDUCE", 15)
+        addAction(40, "if", "REDUCE", 15)
+        addAction(40, "print_line", "REDUCE", 15)
+        addAction(40, "display", "REDUCE", 15)
+        addAction(40, "while", "REDUCE", 15)
+        addAction(40, "for", "REDUCE", 15)
+        addAction(40, "break", "REDUCE", 15)
+        addAction(41, "id", "REDUCE", 22)
+        addAction(41, "end", "REDUCE", 22)
+        addAction(41, ";", "REDUCE", 22)
+        addAction(41, ",", "REDUCE", 22)
+        addAction(41, "int", "REDUCE", 22)
+        addAction(41, "integer", "REDUCE", 22)
+        addAction(41, "if", "REDUCE", 22)
+        addAction(41, "print_line", "REDUCE", 22)
+        addAction(41, "display", "REDUCE", 22)
+        addAction(41, "while", "REDUCE", 22)
+        addAction(41, "for", "REDUCE", 22)
+        addAction(41, "break", "REDUCE", 22)
+        addAction(42, "id", "SHIFT", 64)
+        addAction(42, "number_literal", "SHIFT", 63)
+        addAction(43, "id", "REDUCE", 12)
+        addAction(43, "end", "REDUCE", 12)
+        addAction(43, "int", "REDUCE", 12)
+        addAction(43, "integer", "REDUCE", 12)
+        addAction(43, "if", "REDUCE", 12)
+        addAction(43, "print_line", "REDUCE", 12)
+        addAction(43, "display", "REDUCE", 12)
+        addAction(43, "while", "REDUCE", 12)
+        addAction(43, "for", "REDUCE", 12)
+        addAction(43, "break", "REDUCE", 12)
+        addAction(44, ";", "REDUCE", 14)
+        addAction(44, ",", "SHIFT", 30)
+        addAction(45, "id", "SHIFT", 44)
+        addAction(46, ";", "REDUCE", 16)
+        addAction(46, ",", "REDUCE", 16)
+        addAction(47, ";", "REDUCE", 20)
+        addAction(47, ",", "REDUCE", 20)
+        addAction(47, "=", "SHIFT", 68)
+        addAction(48, ")", "SHIFT", 69)
+        addAction(49, ")", "REDUCE", 46)
+        addAction(49, "<", "SHIFT", 71)
+        addAction(49, "==", "SHIFT", 72)
+        addAction(50, "*", "SHIFT", 74)
+        addAction(50, ")", "REDUCE", 29)
+        addAction(50, "<", "REDUCE", 29)
+        addAction(50, "==", "REDUCE", 29)
+        addAction(51, "*", "REDUCE", 30)
+        addAction(51, ")", "REDUCE", 30)
+        addAction(51, "<", "REDUCE", 30)
+        addAction(51, "==", "REDUCE", 30)
+        addAction(52, "*", "REDUCE", 31)
+        addAction(52, ")", "REDUCE", 31)
+        addAction(52, "<", "REDUCE", 31)
+        addAction(52, "==", "REDUCE", 31)
+        addAction(53, ")", "SHIFT", 75)
+        addAction(54, ")", "REDUCE", 32)
+        addAction(55, ")", "REDUCE", 33)
+        addAction(56, ")", "SHIFT", 76)
+        addAction(57, ")", "SHIFT", 77)
+        addAction(58, "id", "SHIFT", 82)
+        addAction(58, "number_literal", "SHIFT", 81)
+        addAction(59, "id", "SHIFT", 58)
+        addAction(60, "id", "REDUCE", 16)
+        addAction(60, "number_literal", "REDUCE", 16)
+        addAction(61, "id", "REDUCE", 20)
+        addAction(61, "=", "SHIFT", 85)
+        addAction(61, "number_literal", "REDUCE", 20)
+        addAction(62, "id", "REDUCE", 21)
+        addAction(62, "end", "REDUCE", 21)
+        addAction(62, ";", "REDUCE", 21)
+        addAction(62, ",", "REDUCE", 21)
+        addAction(62, "int", "REDUCE", 21)
+        addAction(62, "integer", "REDUCE", 21)
+        addAction(62, "if", "REDUCE", 21)
+        addAction(62, "print_line", "REDUCE", 21)
+        addAction(62, "display", "REDUCE", 21)
+        addAction(62, "while", "REDUCE", 21)
+        addAction(62, "for", "REDUCE", 21)
+        addAction(62, "break", "REDUCE", 21)
+        addAction(63, "id", "REDUCE", 19)
+        addAction(63, "end", "REDUCE", 19)
+        addAction(63, ";", "REDUCE", 19)
+        addAction(63, ",", "REDUCE", 19)
+        addAction(63, "int", "REDUCE", 19)
+        addAction(63, "integer", "REDUCE", 19)
+        addAction(63, "if", "REDUCE", 19)
+        addAction(63, "print_line", "REDUCE", 19)
+        addAction(63, "display", "REDUCE", 19)
+        addAction(63, "while", "REDUCE", 19)
+        addAction(63, "for", "REDUCE", 19)
+        addAction(63, "break", "REDUCE", 19)
+        addAction(64, "id", "REDUCE", 26)
+        addAction(64, "end", "REDUCE", 26)
+        addAction(64, ";", "REDUCE", 26)
+        addAction(64, ",", "REDUCE", 26)
+        addAction(64, "int", "REDUCE", 26)
+        addAction(64, "integer", "REDUCE", 26)
+        addAction(64, "+", "SHIFT", 87)
+        addAction(64, "++", "SHIFT", 88)
+        addAction(64, "if", "REDUCE", 26)
+        addAction(64, "print_line", "REDUCE", 26)
+        addAction(64, "display", "REDUCE", 26)
+        addAction(64, "while", "REDUCE", 26)
+        addAction(64, "for", "REDUCE", 26)
+        addAction(64, "break", "REDUCE", 26)
+        addAction(65, "id", "REDUCE", 29)
+        addAction(65, "end", "REDUCE", 29)
+        addAction(65, ";", "REDUCE", 29)
+        addAction(65, ",", "REDUCE", 29)
+        addAction(65, "int", "REDUCE", 29)
+        addAction(65, "integer", "REDUCE", 29)
+        addAction(65, "+", "REDUCE", 29)
+        addAction(65, "++", "REDUCE", 29)
+        addAction(65, "*", "SHIFT", 90)
+        addAction(65, "if", "REDUCE", 29)
+        addAction(65, "print_line", "REDUCE", 29)
+        addAction(65, "display", "REDUCE", 29)
+        addAction(65, "while", "REDUCE", 29)
+        addAction(65, "for", "REDUCE", 29)
+        addAction(65, "break", "REDUCE", 29)
+        addAction(66, "id", "REDUCE", 30)
+        addAction(66, "end", "REDUCE", 30)
+        addAction(66, ";", "REDUCE", 30)
+        addAction(66, ",", "REDUCE", 30)
+        addAction(66, "int", "REDUCE", 30)
+        addAction(66, "integer", "REDUCE", 30)
+        addAction(66, "+", "REDUCE", 30)
+        addAction(66, "++", "REDUCE", 30)
+        addAction(66, "*", "REDUCE", 30)
+        addAction(66, "if", "REDUCE", 30)
+        addAction(66, "print_line", "REDUCE", 30)
+        addAction(66, "display", "REDUCE", 30)
+        addAction(66, "while", "REDUCE", 30)
+        addAction(66, "for", "REDUCE", 30)
+        addAction(66, "break", "REDUCE", 30)
+        addAction(67, "id", "REDUCE", 31)
+        addAction(67, "end", "REDUCE", 31)
+        addAction(67, ";", "REDUCE", 31)
+        addAction(67, ",", "REDUCE", 31)
+        addAction(67, "int", "REDUCE", 31)
+        addAction(67, "integer", "REDUCE", 31)
+        addAction(67, "+", "REDUCE", 31)
+        addAction(67, "++", "REDUCE", 31)
+        addAction(67, "*", "REDUCE", 31)
+        addAction(67, "if", "REDUCE", 31)
+        addAction(67, "print_line", "REDUCE", 31)
+        addAction(67, "display", "REDUCE", 31)
+        addAction(67, "while", "REDUCE", 31)
+        addAction(67, "for", "REDUCE", 31)
+        addAction(67, "break", "REDUCE", 31)
+        addAction(68, ";", "REDUCE", 13)
+        addAction(69, ";", "REDUCE", 15)
+        addAction(69, ",", "REDUCE", 15)
+        addAction(70, ";", "REDUCE", 22)
+        addAction(70, ",", "REDUCE", 22)
+        addAction(71, "id", "SHIFT", 96)
+        addAction(71, "number_literal", "SHIFT", 95)
+        addAction(72, "begin", "SHIFT", 98)
+        addAction(73, ")", "REDUCE", 43)
+        addAction(74, "id", "SHIFT", 101)
+        addAction(74, "number_literal", "SHIFT", 100)
+        addAction(75, "id", "SHIFT", 101)
+        addAction(75, "number_literal", "SHIFT", 100)
+        addAction(76, ")", "REDUCE", 27)
+        addAction(76, "<", "REDUCE", 27)
+        addAction(76, "==", "REDUCE", 27)
+        addAction(77, "id", "SHIFT", 49)
+        addAction(77, "number_literal", "SHIFT", 48)
+        addAction(78, ";", "SHIFT", 104)
+        addAction(79, ";", "SHIFT", 105)
+        addAction(80, "begin", "SHIFT", 107)
+        addAction(81, ";", "SHIFT", 108)
+        addAction(82, ";", "REDUCE", 46)
+        addAction(82, "<", "SHIFT", 110)
+        addAction(82, "==", "SHIFT", 111)
+        addAction(83, ";", "REDUCE", 29)
+        addAction(83, "*", "SHIFT", 113)
+        addAction(83, "<", "REDUCE", 29)
+        addAction(83, "==", "REDUCE", 29)
+        addAction(84, ";", "REDUCE", 30)
+        addAction(84, "*", "REDUCE", 30)
+        addAction(84, "<", "REDUCE", 30)
+        addAction(84, "==", "REDUCE", 30)
+        addAction(85, ";", "REDUCE", 31)
+        addAction(85, "*", "REDUCE", 31)
+        addAction(85, "<", "REDUCE", 31)
+        addAction(85, "==", "REDUCE", 31)
+        addAction(86, "id", "REDUCE", 15)
+        addAction(86, "number_literal", "REDUCE", 15)
+        addAction(87, "id", "REDUCE", 22)
+        addAction(87, "number_literal", "REDUCE", 22)
+        addAction(88, "id", "SHIFT", 119)
+        addAction(88, "number_literal", "SHIFT", 118)
+        addAction(89, "id", "REDUCE", 23)
+        addAction(89, "end", "REDUCE", 23)
+        addAction(89, ";", "REDUCE", 23)
+        addAction(89, ",", "REDUCE", 23)
+        addAction(89, "int", "REDUCE", 23)
+        addAction(89, "integer", "REDUCE", 23)
+        addAction(89, "if", "REDUCE", 23)
+        addAction(89, "print_line", "REDUCE", 23)
+        addAction(89, "display", "REDUCE", 23)
+        addAction(89, "while", "REDUCE", 23)
+        addAction(89, "for", "REDUCE", 23)
+        addAction(89, "break", "REDUCE", 23)
+        addAction(90, "id", "SHIFT", 64)
+        addAction(90, "number_literal", "SHIFT", 63)
+        addAction(91, "id", "REDUCE", 25)
+        addAction(91, "end", "REDUCE", 25)
+        addAction(91, ";", "REDUCE", 25)
+        addAction(91, ",", "REDUCE", 25)
+        addAction(91, "int", "REDUCE", 25)
+        addAction(91, "integer", "REDUCE", 25)
+        addAction(91, "if", "REDUCE", 25)
+        addAction(91, "print_line", "REDUCE", 25)
+        addAction(91, "display", "REDUCE", 25)
+        addAction(91, "while", "REDUCE", 25)
+        addAction(91, "for", "REDUCE", 25)
+        addAction(91, "break", "REDUCE", 25)
+        addAction(92, "id", "REDUCE", 27)
+        addAction(92, "end", "REDUCE", 27)
+        addAction(92, ";", "REDUCE", 27)
+        addAction(92, ",", "REDUCE", 27)
+        addAction(92, "int", "REDUCE", 27)
+        addAction(92, "integer", "REDUCE", 27)
+        addAction(92, "+", "REDUCE", 27)
+        addAction(92, "++", "REDUCE", 27)
+        addAction(92, "if", "REDUCE", 27)
+        addAction(92, "print_line", "REDUCE", 27)
+        addAction(92, "display", "REDUCE", 27)
+        addAction(92, "while", "REDUCE", 27)
+        addAction(92, "for", "REDUCE", 27)
+        addAction(92, "break", "REDUCE", 27)
+        addAction(93, "id", "SHIFT", 64)
+        addAction(93, "number_literal", "SHIFT", 63)
+        addAction(94, ";", "REDUCE", 21)
+        addAction(94, ",", "REDUCE", 21)
+        addAction(95, ";", "REDUCE", 19)
+        addAction(95, ",", "REDUCE", 19)
+        addAction(96, ";", "REDUCE", 26)
+        addAction(96, ",", "REDUCE", 26)
+        addAction(96, "+", "SHIFT", 123)
+        addAction(96, "++", "SHIFT", 124)
+        addAction(97, ";", "REDUCE", 29)
+        addAction(97, ",", "REDUCE", 29)
+        addAction(97, "+", "REDUCE", 29)
+        addAction(97, "++", "REDUCE", 29)
+        addAction(97, "*", "SHIFT", 126)
+        addAction(98, ";", "REDUCE", 30)
+        addAction(98, ",", "REDUCE", 30)
+        addAction(98, "+", "REDUCE", 30)
+        addAction(98, "++", "REDUCE", 30)
+        addAction(98, "*", "REDUCE", 30)
+        addAction(99, ";", "REDUCE", 31)
+        addAction(99, ",", "REDUCE", 31)
+        addAction(99, "+", "REDUCE", 31)
+        addAction(99, "++", "REDUCE", 31)
+        addAction(99, "*", "REDUCE", 31)
+        addAction(100, "id", "REDUCE", 37)
+        addAction(100, "end", "REDUCE", 37)
+        addAction(100, "int", "REDUCE", 37)
+        addAction(100, "integer", "REDUCE", 37)
+        addAction(100, "if", "REDUCE", 37)
+        addAction(100, "else_if", "SHIFT", 128)
+        addAction(100, "else", "SHIFT", 129)
+        addAction(100, "print_line", "REDUCE", 37)
+        addAction(100, "display", "REDUCE", 37)
+        addAction(100, "while", "REDUCE", 37)
+        addAction(100, "for", "REDUCE", 37)
+        addAction(100, "break", "REDUCE", 37)
+        addAction(101, "id", "SHIFT", 26)
+        addAction(101, "end", "REDUCE", 5)
+        addAction(101, "int", "SHIFT", 24)
+        addAction(101, "integer", "SHIFT", 25)
+        addAction(101, "if", "SHIFT", 16)
+        addAction(101, "print_line", "SHIFT", 17)
+        addAction(101, "display", "SHIFT", 18)
+        addAction(101, "while", "SHIFT", 19)
+        addAction(101, "for", "SHIFT", 20)
+        addAction(101, "break", "SHIFT", 21)
+        addAction(102, ")", "REDUCE", 44)
+        addAction(103, ")", "REDUCE", 30)
+        addAction(104, ")", "REDUCE", 31)
+        addAction(105, ")", "REDUCE", 45)
+        addAction(106, "*", "SHIFT", 74)
+        addAction(106, ")", "REDUCE", 29)
+        addAction(106, "<", "REDUCE", 29)
+        addAction(106, "==", "REDUCE", 29)
+        addAction(107, "id", "REDUCE", 38)
+        addAction(107, "end", "REDUCE", 38)
+        addAction(107, "int", "REDUCE", 38)
+        addAction(107, "integer", "REDUCE", 38)
+        addAction(107, "if", "REDUCE", 38)
+        addAction(107, "print_line", "REDUCE", 38)
+        addAction(107, "display", "REDUCE", 38)
+        addAction(107, "while", "REDUCE", 38)
+        addAction(107, "for", "REDUCE", 38)
+        addAction(107, "break", "REDUCE", 38)
+        addAction(108, "id", "REDUCE", 39)
+        addAction(108, "end", "REDUCE", 39)
+        addAction(108, "int", "REDUCE", 39)
+        addAction(108, "integer", "REDUCE", 39)
+        addAction(108, "if", "REDUCE", 39)
+        addAction(108, "print_line", "REDUCE", 39)
+        addAction(108, "display", "REDUCE", 39)
+        addAction(108, "while", "REDUCE", 39)
+        addAction(108, "for", "REDUCE", 39)
+        addAction(108, "break", "REDUCE", 39)
+        addAction(109, "id", "REDUCE", 40)
+        addAction(109, "end", "REDUCE", 40)
+        addAction(109, "int", "REDUCE", 40)
+        addAction(109, "integer", "REDUCE", 40)
+        addAction(109, "if", "REDUCE", 40)
+        addAction(109, "print_line", "REDUCE", 40)
+        addAction(109, "display", "REDUCE", 40)
+        addAction(109, "while", "REDUCE", 40)
+        addAction(109, "for", "REDUCE", 40)
+        addAction(109, "break", "REDUCE", 40)
+        addAction(110, "id", "SHIFT", 26)
+        addAction(110, "end", "REDUCE", 5)
+        addAction(110, "int", "SHIFT", 24)
+        addAction(110, "integer", "SHIFT", 25)
+        addAction(110, "if", "SHIFT", 16)
+        addAction(110, "print_line", "SHIFT", 17)
+        addAction(110, "display", "SHIFT", 18)
+        addAction(110, "while", "SHIFT", 19)
+        addAction(110, "for", "SHIFT", 20)
+        addAction(110, "break", "SHIFT", 21)
+        addAction(111, "id", "SHIFT", 137)
+        addAction(111, "number_literal", "SHIFT", 136)
+        addAction(112, ";", "REDUCE", 43)
+        addAction(113, "id", "SHIFT", 140)
+        addAction(113, "number_literal", "SHIFT", 139)
+        addAction(114, "id", "SHIFT", 140)
+        addAction(114, "number_literal", "SHIFT", 139)
+        addAction(115, ";", "REDUCE", 27)
+        addAction(115, "<", "REDUCE", 27)
+        addAction(115, "==", "REDUCE", 27)
+        addAction(116, "id", "SHIFT", 82)
+        addAction(116, "number_literal", "SHIFT", 81)
+        addAction(117, "id", "REDUCE", 21)
+        addAction(117, "number_literal", "REDUCE", 21)
+        addAction(118, "id", "REDUCE", 19)
+        addAction(118, "number_literal", "REDUCE", 19)
+        addAction(119, "id", "REDUCE", 26)
+        addAction(119, "+", "SHIFT", 144)
+        addAction(119, "++", "SHIFT", 145)
+        addAction(119, "number_literal", "REDUCE", 26)
+        addAction(120, "id", "REDUCE", 29)
+        addAction(120, "+", "REDUCE", 29)
+        addAction(120, "++", "REDUCE", 29)
+        addAction(120, "*", "SHIFT", 147)
+        addAction(120, "number_literal", "REDUCE", 29)
+        addAction(121, "id", "REDUCE", 30)
+        addAction(121, "+", "REDUCE", 30)
+        addAction(121, "++", "REDUCE", 30)
+        addAction(121, "*", "REDUCE", 30)
+        addAction(121, "number_literal", "REDUCE", 30)
+        addAction(122, "id", "REDUCE", 31)
+        addAction(122, "+", "REDUCE", 31)
+        addAction(122, "++", "REDUCE", 31)
+        addAction(122, "*", "REDUCE", 31)
+        addAction(122, "number_literal", "REDUCE", 31)
+        addAction(123, "id", "REDUCE", 26)
+        addAction(123, "end", "REDUCE", 26)
+        addAction(123, ";", "REDUCE", 26)
+        addAction(123, ",", "REDUCE", 26)
+        addAction(123, "int", "REDUCE", 26)
+        addAction(123, "integer", "REDUCE", 26)
+        addAction(123, "+", "SHIFT", 87)
+        addAction(123, "++", "SHIFT", 88)
+        addAction(123, "if", "REDUCE", 26)
+        addAction(123, "print_line", "REDUCE", 26)
+        addAction(123, "display", "REDUCE", 26)
+        addAction(123, "while", "REDUCE", 26)
+        addAction(123, "for", "REDUCE", 26)
+        addAction(123, "break", "REDUCE", 26)
+        addAction(124, "id", "REDUCE", 29)
+        addAction(124, "end", "REDUCE", 29)
+        addAction(124, ";", "REDUCE", 29)
+        addAction(124, ",", "REDUCE", 29)
+        addAction(124, "int", "REDUCE", 29)
+        addAction(124, "integer", "REDUCE", 29)
+        addAction(124, "+", "REDUCE", 29)
+        addAction(124, "++", "REDUCE", 29)
+        addAction(124, "*", "SHIFT", 90)
+        addAction(124, "if", "REDUCE", 29)
+        addAction(124, "print_line", "REDUCE", 29)
+        addAction(124, "display", "REDUCE", 29)
+        addAction(124, "while", "REDUCE", 29)
+        addAction(124, "for", "REDUCE", 29)
+        addAction(124, "break", "REDUCE", 29)
+        addAction(125, ";", "REDUCE", 23)
+        addAction(125, ",", "REDUCE", 23)
+        addAction(126, "id", "SHIFT", 96)
+        addAction(126, "number_literal", "SHIFT", 95)
+        addAction(127, ";", "REDUCE", 25)
+        addAction(127, ",", "REDUCE", 25)
+        addAction(128, ";", "REDUCE", 27)
+        addAction(128, ",", "REDUCE", 27)
+        addAction(128, "+", "REDUCE", 27)
+        addAction(128, "++", "REDUCE", 27)
+        addAction(129, "id", "SHIFT", 96)
+        addAction(129, "number_literal", "SHIFT", 95)
+        addAction(130, "id", "REDUCE", 34)
+        addAction(130, "end", "REDUCE", 34)
+        addAction(130, "int", "REDUCE", 34)
+        addAction(130, "integer", "REDUCE", 34)
+        addAction(130, "if", "REDUCE", 34)
+        addAction(130, "print_line", "REDUCE", 34)
+        addAction(130, "display", "REDUCE", 34)
+        addAction(130, "while", "REDUCE", 34)
+        addAction(130, "for", "REDUCE", 34)
+        addAction(130, "break", "REDUCE", 34)
+        addAction(131, "(", "SHIFT", 152)
+        addAction(132, "begin", "SHIFT", 107)
+        addAction(133, "end", "SHIFT", 154)
+        addAction(134, ")", "REDUCE", 28)
+        addAction(134, "<", "REDUCE", 28)
+        addAction(134, "==", "REDUCE", 28)
+        addAction(135, "end", "SHIFT", 155)
+        addAction(136, ")", "SHIFT", 156)
+        addAction(137, "+", "SHIFT", 158)
+        addAction(137, "++", "SHIFT", 159)
+        addAction(137, ")", "REDUCE", 26)
+        addAction(138, "+", "REDUCE", 29)
+        addAction(138, "++", "REDUCE", 29)
+        addAction(138, "*", "SHIFT", 161)
+        addAction(138, ")", "REDUCE", 29)
+        addAction(139, "+", "REDUCE", 30)
+        addAction(139, "++", "REDUCE", 30)
+        addAction(139, "*", "REDUCE", 30)
+        addAction(139, ")", "REDUCE", 30)
+        addAction(140, "+", "REDUCE", 31)
+        addAction(140, "++", "REDUCE", 31)
+        addAction(140, "*", "REDUCE", 31)
+        addAction(140, ")", "REDUCE", 31)
+        addAction(141, ";", "REDUCE", 44)
+        addAction(142, ";", "REDUCE", 30)
+        addAction(143, ";", "REDUCE", 31)
+        addAction(144, ";", "REDUCE", 45)
+        addAction(145, ";", "REDUCE", 29)
+        addAction(145, "*", "SHIFT", 113)
+        addAction(145, "<", "REDUCE", 29)
+        addAction(145, "==", "REDUCE", 29)
+        addAction(146, "id", "REDUCE", 23)
+        addAction(146, "number_literal", "REDUCE", 23)
+        addAction(147, "id", "SHIFT", 119)
+        addAction(147, "number_literal", "SHIFT", 118)
+        addAction(148, "id", "REDUCE", 25)
+        addAction(148, "number_literal", "REDUCE", 25)
+        addAction(149, "id", "REDUCE", 27)
+        addAction(149, "+", "REDUCE", 27)
+        addAction(149, "++", "REDUCE", 27)
+        addAction(149, "number_literal", "REDUCE", 27)
+        addAction(150, "id", "SHIFT", 119)
+        addAction(150, "number_literal", "SHIFT", 118)
+        addAction(151, "id", "REDUCE", 24)
+        addAction(151, "end", "REDUCE", 24)
+        addAction(151, ";", "REDUCE", 24)
+        addAction(151, ",", "REDUCE", 24)
+        addAction(151, "int", "REDUCE", 24)
+        addAction(151, "integer", "REDUCE", 24)
+        addAction(151, "if", "REDUCE", 24)
+        addAction(151, "print_line", "REDUCE", 24)
+        addAction(151, "display", "REDUCE", 24)
+        addAction(151, "while", "REDUCE", 24)
+        addAction(151, "for", "REDUCE", 24)
+        addAction(151, "break", "REDUCE", 24)
+        addAction(152, "id", "REDUCE", 28)
+        addAction(152, "end", "REDUCE", 28)
+        addAction(152, ";", "REDUCE", 28)
+        addAction(152, ",", "REDUCE", 28)
+        addAction(152, "int", "REDUCE", 28)
+        addAction(152, "integer", "REDUCE", 28)
+        addAction(152, "+", "REDUCE", 28)
+        addAction(152, "++", "REDUCE", 28)
+        addAction(152, "if", "REDUCE", 28)
+        addAction(152, "print_line", "REDUCE", 28)
+        addAction(152, "display", "REDUCE", 28)
+        addAction(152, "while", "REDUCE", 28)
+        addAction(152, "for", "REDUCE", 28)
+        addAction(152, "break", "REDUCE", 28)
+        addAction(153, ";", "REDUCE", 26)
+        addAction(153, ",", "REDUCE", 26)
+        addAction(153, "+", "SHIFT", 123)
+        addAction(153, "++", "SHIFT", 124)
+        addAction(154, ";", "REDUCE", 29)
+        addAction(154, ",", "REDUCE", 29)
+        addAction(154, "+", "REDUCE", 29)
+        addAction(154, "++", "REDUCE", 29)
+        addAction(154, "*", "SHIFT", 126)
+        addAction(155, "id", "SHIFT", 49)
+        addAction(155, "number_literal", "SHIFT", 48)
+        addAction(156, "id", "REDUCE", 36)
+        addAction(156, "end", "REDUCE", 36)
+        addAction(156, "int", "REDUCE", 36)
+        addAction(156, "integer", "REDUCE", 36)
+        addAction(156, "if", "REDUCE", 36)
+        addAction(156, "print_line", "REDUCE", 36)
+        addAction(156, "display", "REDUCE", 36)
+        addAction(156, "while", "REDUCE", 36)
+        addAction(156, "for", "REDUCE", 36)
+        addAction(156, "break", "REDUCE", 36)
+        addAction(157, "id", "REDUCE", 3)
+        addAction(157, "end", "REDUCE", 3)
+        addAction(157, "int", "REDUCE", 3)
+        addAction(157, "integer", "REDUCE", 3)
+        addAction(157, "if", "REDUCE", 3)
+        addAction(157, "else_if", "REDUCE", 3)
+        addAction(157, "else", "REDUCE", 3)
+        addAction(157, "print_line", "REDUCE", 3)
+        addAction(157, "display", "REDUCE", 3)
+        addAction(157, "while", "REDUCE", 3)
+        addAction(157, "for", "REDUCE", 3)
+        addAction(157, "break", "REDUCE", 3)
+        addAction(158, "id", "REDUCE", 3)
+        addAction(158, "end", "REDUCE", 3)
+        addAction(158, "int", "REDUCE", 3)
+        addAction(158, "integer", "REDUCE", 3)
+        addAction(158, "if", "REDUCE", 3)
+        addAction(158, "print_line", "REDUCE", 3)
+        addAction(158, "display", "REDUCE", 3)
+        addAction(158, "while", "REDUCE", 3)
+        addAction(158, "for", "REDUCE", 3)
+        addAction(158, "break", "REDUCE", 3)
+        addAction(159, "begin", "SHIFT", 107)
+        addAction(160, ")", "REDUCE", 23)
+        addAction(161, "id", "SHIFT", 137)
+        addAction(161, "number_literal", "SHIFT", 136)
+        addAction(162, ")", "REDUCE", 25)
+        addAction(163, "+", "REDUCE", 27)
+        addAction(163, "++", "REDUCE", 27)
+        addAction(163, ")", "REDUCE", 27)
+        addAction(164, "id", "SHIFT", 137)
+        addAction(164, "number_literal", "SHIFT", 136)
+        addAction(165, ";", "REDUCE", 28)
+        addAction(165, "<", "REDUCE", 28)
+        addAction(165, "==", "REDUCE", 28)
+        addAction(166, "id", "REDUCE", 26)
+        addAction(166, "+", "SHIFT", 144)
+        addAction(166, "++", "SHIFT", 145)
+        addAction(166, "number_literal", "REDUCE", 26)
+        addAction(167, "id", "REDUCE", 29)
+        addAction(167, "+", "REDUCE", 29)
+        addAction(167, "++", "REDUCE", 29)
+        addAction(167, "*", "SHIFT", 147)
+        addAction(167, "number_literal", "REDUCE", 29)
+        addAction(168, ";", "REDUCE", 24)
+        addAction(168, ",", "REDUCE", 24)
+        addAction(169, ";", "REDUCE", 28)
+        addAction(169, ",", "REDUCE", 28)
+        addAction(169, "+", "REDUCE", 28)
+        addAction(169, "++", "REDUCE", 28)
+        addAction(170, ")", "SHIFT", 173)
+        addAction(171, "id", "REDUCE", 41)
+        addAction(171, "end", "REDUCE", 41)
+        addAction(171, "int", "REDUCE", 41)
+        addAction(171, "integer", "REDUCE", 41)
+        addAction(171, "if", "REDUCE", 41)
+        addAction(171, "print_line", "REDUCE", 41)
+        addAction(171, "display", "REDUCE", 41)
+        addAction(171, "while", "REDUCE", 41)
+        addAction(171, "for", "REDUCE", 41)
+        addAction(171, "break", "REDUCE", 41)
+        addAction(172, "+", "SHIFT", 158)
+        addAction(172, "++", "SHIFT", 159)
+        addAction(172, ")", "REDUCE", 26)
+        addAction(173, "+", "REDUCE", 29)
+        addAction(173, "++", "REDUCE", 29)
+        addAction(173, "*", "SHIFT", 161)
+        addAction(173, ")", "REDUCE", 29)
+        addAction(174, "id", "REDUCE", 24)
+        addAction(174, "number_literal", "REDUCE", 24)
+        addAction(175, "id", "REDUCE", 28)
+        addAction(175, "+", "REDUCE", 28)
+        addAction(175, "++", "REDUCE", 28)
+        addAction(175, "number_literal", "REDUCE", 28)
+        addAction(176, "begin", "SHIFT", 98)
+        addAction(177, ")", "REDUCE", 24)
+        addAction(178, "+", "REDUCE", 28)
+        addAction(178, "++", "REDUCE", 28)
+        addAction(178, ")", "REDUCE", 28)
+        addAction(179, "id", "REDUCE", 37)
+        addAction(179, "end", "REDUCE", 37)
+        addAction(179, "int", "REDUCE", 37)
+        addAction(179, "integer", "REDUCE", 37)
+        addAction(179, "if", "REDUCE", 37)
+        addAction(179, "else_if", "SHIFT", 128)
+        addAction(179, "else", "SHIFT", 129)
+        addAction(179, "print_line", "REDUCE", 37)
+        addAction(179, "display", "REDUCE", 37)
+        addAction(179, "while", "REDUCE", 37)
+        addAction(179, "for", "REDUCE", 37)
+        addAction(179, "break", "REDUCE", 37)
+        addAction(180, "id", "REDUCE", 35)
+        addAction(180, "end", "REDUCE", 35)
+        addAction(180, "int", "REDUCE", 35)
+        addAction(180, "integer", "REDUCE", 35)
+        addAction(180, "if", "REDUCE", 35)
+        addAction(180, "print_line", "REDUCE", 35)
+        addAction(180, "display", "REDUCE", 35)
+        addAction(180, "while", "REDUCE", 35)
+        addAction(180, "for", "REDUCE", 35)
+        addAction(180, "break", "REDUCE", 35)
+
 
     }
 
@@ -1148,15 +1026,150 @@ public class LR1Parser {
     public void generateGotoTable() {
         goToTable = new HashMap<>();
 
-
-
+        addGoTo(3, "S", 1)
+        addGoTo(3, "BEGIN_BLOCK", 2)
+        addGoTo(5, "BEGIN_STMT", 4)
+        addGoTo(8, "STMTS", 7)
+        addGoTo(8, "STMT", 8)
+        addGoTo(8, "DECLARATION_LIST", 9)
+        addGoTo(8, "DECLARATION", 15)
+        addGoTo(8, "TYPE", 22)
+        addGoTo(8, "ID_LIST", 23)
+        addGoTo(8, "IF_STMT", 10)
+        addGoTo(8, "PRINT_STMT", 11)
+        addGoTo(8, "WHILE_STMT", 12)
+        addGoTo(8, "FOR_STMT", 13)
+        addGoTo(8, "BREAK_STMT", 14)
+        addGoTo(11, "STMTS", 28)
+        addGoTo(11, "STMT", 8)
+        addGoTo(11, "DECLARATION_LIST", 9)
+        addGoTo(11, "DECLARATION", 15)
+        addGoTo(11, "TYPE", 22)
+        addGoTo(11, "ID_LIST", 23)
+        addGoTo(11, "IF_STMT", 10)
+        addGoTo(11, "PRINT_STMT", 11)
+        addGoTo(11, "WHILE_STMT", 12)
+        addGoTo(11, "FOR_STMT", 13)
+        addGoTo(11, "BREAK_STMT", 14)
+        addGoTo(18, "DECLARATION_LIST'", 29)
+        addGoTo(25, "ID_LIST", 37)
+        addGoTo(29, "ASSIGNMENT", 38)
+        addGoTo(33, "DECLARATION", 41)
+        addGoTo(33, "TYPE", 42)
+        addGoTo(33, "ID_LIST", 43)
+        addGoTo(34, "TERM", 46)
+        addGoTo(34, "FACTOR", 47)
+        addGoTo(34, "COM_STMT", 45)
+        addGoTo(35, "PRINT_CONTENT", 50)
+        addGoTo(36, "PRINT_CONTENT", 53)
+        addGoTo(37, "TERM", 46)
+        addGoTo(37, "FACTOR", 47)
+        addGoTo(37, "COM_STMT", 54)
+        addGoTo(38, "DECLARATION", 55)
+        addGoTo(38, "TYPE", 56)
+        addGoTo(38, "ID_LIST", 57)
+        addGoTo(41, "ID_LIST'", 59)
+        addGoTo(42, "OP_STMT", 60)
+        addGoTo(42, "TERM", 61)
+        addGoTo(42, "FACTOR", 62)
+        addGoTo(44, "DECLARATION_LIST'", 65)
+        addGoTo(45, "ID_LIST", 66)
+        addGoTo(47, "ASSIGNMENT", 67)
+        addGoTo(49, "COM_STMT'", 70)
+        addGoTo(50, "TERM'", 73)
+        addGoTo(58, "TERM", 79)
+        addGoTo(58, "FACTOR", 80)
+        addGoTo(58, "COM_STMT", 78)
+        addGoTo(59, "ID_LIST", 83)
+        addGoTo(61, "ASSIGNMENT", 84)
+        addGoTo(64, "OP_STMT'", 86)
+        addGoTo(65, "TERM'", 89)
+        addGoTo(70, "ID_LIST'", 91)
+        addGoTo(71, "OP_STMT", 92)
+        addGoTo(71, "TERM", 93)
+        addGoTo(71, "FACTOR", 94)
+        addGoTo(72, "BEGIN_STMT", 97)
+        addGoTo(74, "FACTOR", 99)
+        addGoTo(75, "FACTOR", 102)
+        addGoTo(77, "FACTOR", 103)
+        addGoTo(80, "BEGIN_STMT", 106)
+        addGoTo(82, "COM_STMT'", 109)
+        addGoTo(83, "TERM'", 112)
+        addGoTo(87, "ID_LIST'", 114)
+        addGoTo(88, "OP_STMT", 115)
+        addGoTo(88, "TERM", 116)
+        addGoTo(88, "FACTOR", 117)
+        addGoTo(90, "TERM", 120)
+        addGoTo(90, "FACTOR", 62)
+        addGoTo(93, "FACTOR", 121)
+        addGoTo(96, "OP_STMT'", 122)
+        addGoTo(97, "TERM'", 125)
+        addGoTo(100, "IF_STMT'", 127)
+        addGoTo(101, "STMTS", 130)
+        addGoTo(101, "STMT", 8)
+        addGoTo(101, "DECLARATION_LIST", 9)
+        addGoTo(101, "DECLARATION", 15)
+        addGoTo(101, "TYPE", 22)
+        addGoTo(101, "ID_LIST", 23)
+        addGoTo(101, "IF_STMT", 10)
+        addGoTo(101, "PRINT_STMT", 11)
+        addGoTo(101, "WHILE_STMT", 12)
+        addGoTo(101, "FOR_STMT", 13)
+        addGoTo(101, "BREAK_STMT", 14)
+        addGoTo(106, "TERM'", 131)
+        addGoTo(110, "STMTS", 132)
+        addGoTo(110, "STMT", 8)
+        addGoTo(110, "DECLARATION_LIST", 9)
+        addGoTo(110, "DECLARATION", 15)
+        addGoTo(110, "TYPE", 22)
+        addGoTo(110, "ID_LIST", 23)
+        addGoTo(110, "IF_STMT", 10)
+        addGoTo(110, "PRINT_STMT", 11)
+        addGoTo(110, "WHILE_STMT", 12)
+        addGoTo(110, "FOR_STMT", 13)
+        addGoTo(110, "BREAK_STMT", 14)
+        addGoTo(111, "OP_STMT", 133)
+        addGoTo(111, "TERM", 134)
+        addGoTo(111, "FACTOR", 135)
+        addGoTo(113, "FACTOR", 138)
+        addGoTo(114, "FACTOR", 141)
+        addGoTo(116, "FACTOR", 142)
+        addGoTo(119, "OP_STMT'", 143)
+        addGoTo(120, "TERM'", 146)
+        addGoTo(123, "OP_STMT'", 148)
+        addGoTo(124, "TERM'", 149)
+        addGoTo(126, "TERM", 150)
+        addGoTo(126, "FACTOR", 94)
+        addGoTo(129, "FACTOR", 151)
+        addGoTo(132, "BEGIN_STMT", 153)
+        addGoTo(137, "OP_STMT'", 157)
+        addGoTo(138, "TERM'", 160)
+        addGoTo(145, "TERM'", 162)
+        addGoTo(147, "TERM", 163)
+        addGoTo(147, "FACTOR", 117)
+        addGoTo(150, "FACTOR", 164)
+        addGoTo(153, "OP_STMT'", 165)
+        addGoTo(154, "TERM'", 166)
+        addGoTo(155, "TERM", 46)
+        addGoTo(155, "FACTOR", 47)
+        addGoTo(155, "COM_STMT", 167)
+        addGoTo(159, "BEGIN_STMT", 168)
+        addGoTo(161, "TERM", 169)
+        addGoTo(161, "FACTOR", 135)
+        addGoTo(164, "FACTOR", 170)
+        addGoTo(166, "OP_STMT'", 171)
+        addGoTo(167, "TERM'", 172)
+        addGoTo(172, "OP_STMT'", 174)
+        addGoTo(173, "TERM'", 175)
+        addGoTo(176, "BEGIN_STMT", 176)
+        addGoTo(179, "IF_STMT'", 177)
     }
 
-    public void addGoToEntry(int state, String nonterminal, int nextState) {
-        if (!table.containsKey(state)) {
-            table.put(state, new HashMap<>());
+    public void addGoTo(int state, String nonterminal, int nextState) {
+        if (!goToTable.containsKey(state)) {
+            goToTable.put(state, new HashMap<>());
         }
-        table.get(state).put(nonterminal, nextState);
+        goToTable.get(state).put(nonterminal, nextState);
     }
 
     public void parseList(Token token_table) {
@@ -1191,19 +1204,39 @@ public class LR1Parser {
 
 
     /*
-    set ip to point to the first symbol of w;
-    set X to the top stack symbol;
-    while ( X $ ) {  stack is not empty
-        if( X is a ) pop the stack and advance ip;
-        else if ( X is a terminal ) errorQ;
-        else if ( M[X,a] is an error entry ) errorQ;
-        else if ( M[X,a] = X -> YY •••Y) { X2k
-                output the production X -> Y\Y • • • Y; 2k
-                pop the stack;
-                push Yk, Yfc-i,... ,Yi onto the stack, with Y\ on top;
-        }
-        set X to the top stack symbol;
-    }
+    initialize pointer on input to be index 0
+    stack.push(0)  // Start by adding state 0 onto the stack
+
+    loop:
+        current_state = stack.top()
+        input_symbol = input[index]
+
+        action = getAction(current_state, input_symbol)
+        if action.type == 'ACCEPT':
+            break
+
+        elif action.type == 'SHIFT':
+            next_state = action.number
+            stack.push(input_symbol)
+            stack.push(next_state)
+            index += 1
+
+        elif action.type == 'REDUCE':
+            production = getProduction(action.number)
+            rhs_length = len(production.rhs)
+            for i in range(2 * rhs_length):
+                stack.pop()
+            lhs_symbol = production.lhs
+            current_state = stack.top()
+            next_state = getGoto(current_state, lhs_symbol)
+            stack.push(lhs_symbol)
+            stack.push(next_state)
+
+        else:
+            error("Unexpected action")
+
+    end loop
+
      */
 
     public void start_parser() {
