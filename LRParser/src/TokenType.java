@@ -1,6 +1,6 @@
 
 public class TokenType {
-    public static final String IDENTIFIER = "identifier";
+    public static final String IDENTIFIER = "id";
     public static final String NUM_LITERAL = "number_literal";
     public static final String STRING_LITERAL = "string_literal";
     public static final String COMMA = "punctuation comma";
