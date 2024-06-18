@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/SyntaxDirectedTranslation.iml" filepath="$PROJECT_DIR$/SyntaxDirectedTranslation.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/SyntaxDirectedTranslation.iml" filepath="$PROJECT_DIR$/.idea/SyntaxDirectedTranslation.iml" />
     </modules>
   </component>
 </project>

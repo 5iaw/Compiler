@@ -2,7 +2,6 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/LLParser" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/SiawJiaYuin_LLparser/LLParser" vcs="Git" />
   </component>
 </project>
