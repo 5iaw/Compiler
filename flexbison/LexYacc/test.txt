@@ -1,0 +1,5 @@
+program LexYacc
+begin
+int operand1 = 1;
+print_line("Done");
+end;

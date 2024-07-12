@@ -1,0 +1,10 @@
+program LexYacc
+begin -- flex bison program
+int operand1 = 10, operand2=20, operand3;
+operand3 = operand1 + operand2;
+print_line(operand3); -- 30
+operand3 = operand3 - operand2 - operand1;
+print_line(operand3); -- 0
+operand3 = operand3 +300 - (operand2 * operand1);
+print_line(operand3); -- 100
+end
