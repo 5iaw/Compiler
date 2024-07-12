@@ -1,0 +1,19 @@
+program Test3
+   begin
+	  integer  Time_10_24 = 2206, Hour_In_Day = 0, temp=0,
+		 Minute_In_Hour=3;
+	  for (int i=0; i < 10; i++)  -- comment, for statement
+	     begin
+	         display("test input");
+	     end
+	   while ( temp < 10) -- comment, while statement
+               begin
+		   temp = temp+1;
+		   display("Increase temperature");
+		   if (temp == 5)
+		      begin
+			display("stop increasing temp");
+			break;
+		      end
+	   end
+ end
